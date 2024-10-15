@@ -7,13 +7,13 @@ function userControllers(){
                
                  if(!name || !email  || !password)
                  {
-                     res.json({"error":"All fields are required"});
+                    return res.json({"error":"All fields are required"});
                  }
                try {
                     const userCreated = await User.create({name,email,password})
-                    res.json({usercrated : userCreated._id})
+                    return res.json({message: "User Created"})
                  } catch (error) {
-                    res.json({message: "user not crated", error : error.errorResponse.errmsg})
+                    return  res.status(500).json({error})
                  }
              
             },
@@ -23,15 +23,15 @@ function userControllers(){
                 const {email,password} = req.body;
                 if(!email  || !password)
                     {
-                        res.json({"error":"All fields are required"});
+                        return res.json({"error":"All fields are required"});
                     }
                     try {
                        const userFound = await User.findOne({email,password})
                        if(userFound)
                        {
-                              res.send("user found")
+                        return  res.send("user found")
                        }else{
-                               res.send("user not found")
+                        return  res.send("user not found")
                        }
                     } catch (error) {
                        
