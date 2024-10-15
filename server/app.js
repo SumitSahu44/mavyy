@@ -8,10 +8,13 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());  // To parse JSON bodies
 
-mongoose.connect('mongodb://localhost:27017/modules').then(() => {
+mongoose.connect('mongodb://localhost:27017/Mavy', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
     console.log('Connected to MongoDB');
 }).catch((error) => {
-    console.log('Error connecting to MongoDB:', error);
+    console.error('Error connecting to MongoDB:', error);
 });
 
 const corsOptions = {

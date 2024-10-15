@@ -209,8 +209,8 @@ useEffect(() => {
                         <div className="product-img" id="p-img1"></div>
                         <div className="product-info">
                             <h3>{product.name}</h3>
-                            <p>{product.description}</p>
-                            <p>{product.price}</p>
+                            <p><b>Description</b>- {product.description}</p>
+                            <p><b>Price</b>- {product.price}$</p>
                             <a href={`./buy?pid=${product._id}`}><button>Buy Now</button></a>
                         </div>
                     </div>

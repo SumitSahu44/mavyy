@@ -5,13 +5,20 @@ import { useSearchParams } from 'next/navigation';
 import "../styles/responsivefooter.css"
 import "../styles/responsivenav.css"
 import "./buy.css"
+import product from '../product/page';
 
 export default function buy(){
+  
   const searchParams = useSearchParams();
   const pid = searchParams.get('pid');
+  
   const [data, setData] = useState([]); // Step 1: Initialize state for storing data
-  const [error, setError] = useState(null); // Step 2: Initialize state for errors
- 
+  const [message, setMessage] = useState('');
+  const [cartDetails, setCartDetails] = useState(null);  // Store cart details (product and quantity)
+  const [quantity, setQuantity] = useState(1);           // Default quantity is 1    
+  const [error, setError] = useState('');
+  const [userId, setUserId] = useState('670e9f01a0ec0d2d5d7c117a'); // Set this to your logged-in user ID
+  const [productId, setProductId] = useState(`${pid}`);
   useEffect(() => {
     
    
@@ -36,6 +43,7 @@ export default function buy(){
     window.addEventListener('resize', slideImage);
   }, []);
 
+  // get product details 
   useEffect(() => {
    
     const fetchData = async () => {
@@ -56,6 +64,85 @@ export default function buy(){
   
 
 
+// add to cart function 
+  // useEffect that will trigger the POST request when cartDetails change
+  useEffect(() => {
+    if (cartDetails) {
+      const addToCart = async () => {
+        try {
+
+          
+          const response = await fetch('http://localhost:4000/user/addtocart', { 
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, productId, quantity }),
+        });
+
+          if (response.ok) {
+            setMessage('Product added to cart successfully!');
+          } else {
+            setMessage('Failed to add product to cart.');
+          }
+        } catch (error) {
+          console.error('Error in adding product to cart:', error);
+   setError('An error occurred while adding the product to the cart.');
+   setMessage('');
+        }
+      };
+
+      // Trigger the addToCart function inside useEffect
+      addToCart();
+    }
+  }, [cartDetails]); // Only run useEffect when cartDetails changes
+
+
+
+
+
+
+
+ // Function to handle the Add to Cart action
+ const handleAddToCartClick = async () => {
+  try {
+    if (!userId || !productId || !quantity) {
+      setError('All fields are required');
+      setMessage('');
+      return;
+    }
+    // Make an API call to the addToCart endpoint
+    const response = await fetch('http://localhost:4000/user/addtocart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId,
+        productId,
+        quantity,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Show success message
+      setMessage('Product added to cart successfully!');
+      setError('');
+    } else {
+      // Handle errors
+      setError(data.message || 'Error adding product to cart');
+      setMessage('');
+    }
+  } catch (error) {
+    console.error('Error in adding product to cart:', error);
+    setError('An error occurred while adding the product to the cart.');
+    setMessage('');
+  }
+};
+
+
     return(
         <div>
             <div class = "card-wrapper">
@@ -64,7 +151,7 @@ export default function buy(){
             <div class = "product-imgs">
                 <div class = "img-display">
                     <div class = "img-showcase">
-                        <img src = "../server/products_img/Abera.jpeg" alt = "shoe image"/>
+                        <img src = "img/image0.jpeg" alt = "shoe image"/>
                         <img src = "img/image1.jpeg" alt = "shoe image"/>
                         <img src = "img/image2.jpeg" alt = "shoe image"/>
                 
@@ -119,11 +206,37 @@ export default function buy(){
             </div>
       
             <div class = "purchase-info">
-              <input type = "number" min = "0" value = "1"/>
-             <a href="cart.html"> <button type = "button" class = "btn">
+              {/* <input type = "number" min = "0" placeholder='1'/> */}
+              <input
+          type="hidden"
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+          placeholder="Enter your user ID"
+        />
+
+         
+                  <input
+                    type="hidden"
+                    value={productId}
+                    onChange={(e) => setProductId(e.target.value)}
+                    placeholder="Enter product ID"
+                  />
+
+              <input 
+                type="number" 
+                min="1" 
+                name="quantity"
+                value={quantity} 
+                onChange={(e) => setQuantity(e.target.value)} 
+              />
+
+
+             <button type = "button" onClick={handleAddToCartClick} class = "btn">
               Add to Cart <i class = "fas fa-shopping-cart"></i>
-            </button></a>
-              <button type = "button" class = "btn">Compare</button>
+            </button>
+            {message && <p style={{ color: 'green' }}>{message}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+              {/* <button type = "button" class = "btn">Compare</button> */}
             </div>
       
            
