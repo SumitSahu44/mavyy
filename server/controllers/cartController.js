@@ -8,8 +8,8 @@ function cartController()
             const { userId, productId, quantity } = req.body;
         
             // Debugging: Log the request body and field types
-            console.log('Request body:', req.body);
-            console.log('userId:', userId, 'productId:', productId, 'quantity:', quantity); // This line should work without issues
+            // console.log('Request body:', req.body);
+            // console.log('userId:', userId, 'productId:', productId, 'quantity:', quantity); // This line should work without issues
         
             // Validate input
             if (!userId || !productId || quantity === undefined || quantity <= 0) {
