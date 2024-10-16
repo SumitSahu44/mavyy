@@ -17,7 +17,7 @@ export default function buy(){
   const [cartDetails, setCartDetails] = useState(null);  // Store cart details (product and quantity)
   const [quantity, setQuantity] = useState(1);           // Default quantity is 1    
   const [error, setError] = useState('');
-  const [userId, setUserId] = useState('670e9f01a0ec0d2d5d7c117a'); // Set this to your logged-in user ID
+  const [userId, setUserId] = useState('67100e4f93f286ae10f1bcb6'); // Set this to your logged-in user ID
   const [productId, setProductId] = useState(`${pid}`);
   useEffect(() => {
     

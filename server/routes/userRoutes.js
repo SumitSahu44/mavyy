@@ -4,12 +4,14 @@ const authController = require('../controllers/authController');
 const productController = require('../controllers/productController');
 const cartController = require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
+const authenticateToken = require('../middleware/authenticateToken');
+
 // Define user routes
 
 // checked routes 
 router.post('/signup', authController().postSignup);
 router.post('/product/add', productController().addProduct);
-router.post('/addtocart', cartController().addToCart);
+router.post('/addtocart',authenticateToken, cartController().addToCart);
 router.post('/deleteproduct', cartController().deleteProduct)
 router.post('/checkout',orderController().confirmOrder)
 router.get('/products', productController().getproducts)
