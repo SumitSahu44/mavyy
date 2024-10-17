@@ -1,12 +1,20 @@
 "use client";
 import React, { useState } from "react";
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation'; // Import useRouter
 import "./signup.css"
 
 export default function signup() {
+
+    const searchParams = useSearchParams();
+    const pid = searchParams.get('pid');
+  
+    
     const [name, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isChecked, setIsChecked] = useState(false);
+    const router = useRouter(); // Initialize useRouter
 
 
     const handleSubmit = async (e) => {
@@ -31,12 +39,15 @@ export default function signup() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
+                credentials: 'include' // Include cookies0 
             });
 
             const data = await response.json();
 
             if (response.ok) {
                 alert("User registered successfully!");
+
+             router.push(pid ? `/buy?pid=${pid}` : '/'); // Redirect to buy page after success
             } else {
                 alert(data.message  || "Error during registration.");
             }

@@ -17,10 +17,11 @@ function userControllers(){
                         });
 
                         res.cookie('token', token, {
-                               maxAge: 3600000 * 720  // 1 hour in milliseconds
+                               maxAge: 3600000 * 720 , // 1 hour in milliseconds
+                               httpOnly: true
                         });
 
-                   
+                        
                    
                     return res.json({message: "User Created", userId: userCreated._id})
                  } catch (error) {

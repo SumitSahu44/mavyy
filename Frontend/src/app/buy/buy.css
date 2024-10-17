@@ -173,6 +173,9 @@ img{
     font-size: 0.8rem;
     transition: all 0.5s ease;
 }
+.register-link{
+    color: blue !important;
+}
 .social-links a:hover{
     background: #000;
     border-color: transparent;

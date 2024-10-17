@@ -64,48 +64,14 @@ export default function buy(){
   
 
 
-// add to cart function 
-  // useEffect that will trigger the POST request when cartDetails change
-  useEffect(() => {
-    if (cartDetails) {
-      const addToCart = async () => {
-        try {
-
-          
-          const response = await fetch('http://localhost:4000/user/addtocart', { 
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userId, productId, quantity }),
-        });
-
-          if (response.ok) {
-            setMessage('Product added to cart successfully!');
-          } else {
-            setMessage('Failed to add product to cart.');
-          }
-        } catch (error) {
-          console.error('Error in adding product to cart:', error);
-   setError('An error occurred while adding the product to the cart.');
-   setMessage('');
-        }
-      };
-
-      // Trigger the addToCart function inside useEffect
-      addToCart();
-    }
-  }, [cartDetails]); // Only run useEffect when cartDetails changes
-
-
-
-
 
 
 
  // Function to handle the Add to Cart action
  const handleAddToCartClick = async () => {
   try {
+
+       
     if (!userId || !productId || !quantity) {
       setError('All fields are required');
       setMessage('');
@@ -122,6 +88,7 @@ export default function buy(){
         productId,
         quantity,
       }),
+      credentials: 'include', // This ensures cookies are sent along with the request
     });
 
     const data = await response.json();
@@ -235,7 +202,7 @@ export default function buy(){
               Add to Cart <i class = "fas fa-shopping-cart"></i>
             </button>
             {message && <p style={{ color: 'green' }}>{message}</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: 'red' }}>{error}  <a href={`signup?pid=${pid}`} className='register-link'>Register Here</a> </p>}
               {/* <button type = "button" class = "btn">Compare</button> */}
             </div>
       
