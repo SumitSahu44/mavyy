@@ -12,7 +12,7 @@ function authenticateToken()
           
               // Optionally, fetch the full user details from the database using the userId
               const user = await User.findById(userId);
-          
+         
               if (!user) {
                 return res.status(404).json({ message: 'User not found' });
               }

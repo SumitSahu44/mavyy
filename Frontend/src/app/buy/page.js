@@ -17,7 +17,7 @@ export default function buy(){
   const [cartDetails, setCartDetails] = useState(null);  // Store cart details (product and quantity)
   const [quantity, setQuantity] = useState(1);           // Default quantity is 1    
   const [error, setError] = useState('');
-  const [userId, setUserId] = useState('67100e4f93f286ae10f1bcb6'); // Set this to your logged-in user ID
+  const [userId, setUserId] = useState('6711809b219925aca7836d07'); // Set this to your logged-in user ID
   const [productId, setProductId] = useState(`${pid}`);
   useEffect(() => {
     
@@ -71,7 +71,6 @@ export default function buy(){
  const handleAddToCartClick = async () => {
   try {
 
-       
     if (!userId || !productId || !quantity) {
       setError('All fields are required');
       setMessage('');
