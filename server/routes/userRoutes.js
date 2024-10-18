@@ -12,6 +12,7 @@ const userAuthenticateToken = require('../controllers/userAuthenticateToken')
 router.post('/signup', authController().postSignup);
 router.post('/product/add', productController().addProduct);
 router.get('/userId',authenticateToken, userAuthenticateToken().userId) ;
+router.get('/cart',authenticateToken, cartController().getcart) ;
 router.post('/addtocart',authenticateToken, cartController().addToCart);
 router.post('/deleteproduct', cartController().deleteProduct)
 router.post('/checkout',orderController().confirmOrder)

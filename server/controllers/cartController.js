@@ -64,6 +64,28 @@ function cartController()
             }
         }
         ,
+        async getcart(req,res)
+        {
+            try {
+                const userId = req.user.userId; // Get the userId from cookies
+                if (!userId) {
+                  return res.status(400).json({ message: "UserId is missing" });
+                }
+            
+                // Find the cart by userId
+                const cart = await Cart.findOne({ userId });
+                if (!cart) {
+                  return res.status(404).json({ message: "Cart not found for this user" });
+                }
+            
+                // Return the cart details
+                res.json(cart.products);
+              } catch (error) {
+                console.error("Error fetching cart details:", error);
+                res.status(500).json({ message: "Internal server error" });
+              }
+            
+        },
        async deleteProduct(req,res)
         {
               const {userId, productId} = req.body;

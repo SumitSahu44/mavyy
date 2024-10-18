@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 function userControllers(){
     return {
        async postSignup(req,res){
+
+        
             const {name,email,password} = req.body;
             JWT_SECRET = process.env.JSONWEBTOKEN;
                  if(!name || !email  || !password)
