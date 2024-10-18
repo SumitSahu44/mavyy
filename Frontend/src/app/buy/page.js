@@ -7,17 +7,17 @@ import "../styles/responsivenav.css"
 import "./buy.css"
 import product from '../product/page';
 
+
 export default function buy(){
   
   const searchParams = useSearchParams();
   const pid = searchParams.get('pid');
-  
   const [data, setData] = useState([]); // Step 1: Initialize state for storing data
   const [message, setMessage] = useState('');
   const [cartDetails, setCartDetails] = useState(null);  // Store cart details (product and quantity)
   const [quantity, setQuantity] = useState(1);           // Default quantity is 1    
   const [error, setError] = useState('');
-  const [userId, setUserId] = useState('6711809b219925aca7836d07'); // Set this to your logged-in user ID
+  const [userId, setUserId] = useState(null); // Set this to your logged-in user ID
   const [productId, setProductId] = useState(`${pid}`);
   useEffect(() => {
     
@@ -43,10 +43,29 @@ export default function buy(){
     window.addEventListener('resize', slideImage);
   }, []);
 
-  // get product details 
+  // get userId and product details 
   useEffect(() => {
    
     const fetchData = async () => {
+   
+   try {
+    const response1 = await fetch(`http://localhost:4000/user/userId`, {
+        method: 'GET',
+        credentials: 'include', // Ensures cookies are sent with the request
+    });
+    
+    if (!response1.ok) {
+        throw new Error('Error fetching user data');
+    }
+    
+        const data1 = await response1.json();
+        setUserId(data1.userId)
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+
+
+
         try {
             const response = await fetch(`http://localhost:4000/user/products?pid=${pid}`);
             if (!response.ok) {
@@ -71,8 +90,8 @@ export default function buy(){
  const handleAddToCartClick = async () => {
   try {
 
-    if (!userId || !productId || !quantity) {
-      setError('All fields are required');
+    if (!userId) {
+      setError('Not Registered: ');
       setMessage('');
       return;
     }

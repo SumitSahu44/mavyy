@@ -43,7 +43,7 @@ export default function signup() {
             });
 
             const data = await response.json();
-
+               console.log("data"+ response)
             if (response.ok) {
                 alert("User registered successfully!");
 

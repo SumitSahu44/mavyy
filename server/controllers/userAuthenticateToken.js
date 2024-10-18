@@ -9,7 +9,7 @@ function authenticateToken()
             try {
               // req.user should have the userId because it was added in the middleware
               const userId = req.user.userId;
-          
+             
               // Optionally, fetch the full user details from the database using the userId
               const user = await User.findById(userId);
          
@@ -20,8 +20,7 @@ function authenticateToken()
               // Send the userId (or any other necessary user details)
               res.json({
                 userId: user._id,
-                username: user.username,
-                email: user.email,
+    
               });
             } catch (error) {
               console.error('Error fetching user details:', error);
