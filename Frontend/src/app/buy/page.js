@@ -14,7 +14,6 @@ export default function buy(){
   const pid = searchParams.get('pid');
   const [data, setData] = useState([]); // Step 1: Initialize state for storing data
   const [message, setMessage] = useState('');
-  const [cartDetails, setCartDetails] = useState(null);  // Store cart details (product and quantity)
   const [quantity, setQuantity] = useState(1);           // Default quantity is 1    
   const [error, setError] = useState('');
   const [userId, setUserId] = useState(null); // Set this to your logged-in user ID
@@ -136,9 +135,9 @@ export default function buy(){
             <div class = "product-imgs">
                 <div class = "img-display">
                     <div class = "img-showcase">
-                        <img src = "img/image0.jpeg" alt = "shoe image"/>
-                        <img src = "img/image1.jpeg" alt = "shoe image"/>
-                        <img src = "img/image2.jpeg" alt = "shoe image"/>
+                        <img src = {`img/${data.imageUrl}`} alt = {data.name}/>
+                        <img src = {`img/${data.imageUrl}`} alt = {data.name}/>
+                        <img src = {`img/${data.imageUrl}`} alt = {data.name}/>
                 
                     </div>
                 </div>

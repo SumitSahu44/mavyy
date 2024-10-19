@@ -6,8 +6,12 @@ import { useGSAP } from "@gsap/react";
 import { gsap, Power3, Circ,Expo } from 'gsap';
 import { RiMenu3Fill } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 export default function product(){
+    const [products, setProducts] = useState([]); // State to store product details
+    const [isLoading, setIsLoading] = useState(true); // Loading state
+
 
     useGSAP(()=>{
         let menu=document.querySelector("#nav i");
@@ -48,21 +52,21 @@ export default function product(){
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:4000/user/products`);
+                const response = await fetch(`http://localhost:4000/user/products`); // Fetch product data from backend
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                // setStudents(data);
-                console.log(data);
-
+                setProducts(data); // Set products data into state
+                setIsLoading(false); // Set loading to false after data is fetched
             } catch (error) {
                 console.error('Error fetching data:', error);
+                setIsLoading(false); // Set loading to false in case of error
             }
         };
         fetchData();
-    }, [])
-    
+    }, []);
+
     return(
 
         <div>
@@ -84,35 +88,40 @@ export default function product(){
           </div>
     </header>
 
-
     <section>
-        <div className="item-section">
-            <div className="p-heading"><h1>Featured Products</h1></div>
-            <div className="item-cont">
-                <div className="item">
-                    <div className="product-img " id="p-img1">
-                        
-                    </div>
-                    <div className="product-info">
-                        <h3>Abena</h3>
-                        <p>$35.00</p>
-                        <a href="buy.html"><button>Buy Now</button></a>
-                    </div>
-                </div>
-                
-                <div className="item">
-                    <div className="product-img" id="p-img2">
-                       
-                    </div>
-                    <div className="product-info">
-                        <h3>Akuba</h3>
-                        <p>$35.00</p>
-                        <a href="buy2.html"><button>Buy Now</button></a>
-                    </div>
-                </div>
+    <div className="item-section">
+        <div className="p-heading"><h1>Featured Products</h1></div>
+        <div className="item-cont">
+            {isLoading ? (
+                <p>Loading products...</p> // Show loading message while fetching data
+            ) : (
+                products.length > 0 ? (
+                    products.map((product, index) => (
+                        <div className="item" key={index}>
+                            <div className="product-img">
+                                <img 
+                                    src={product.imageUrl ? `img/${product.imageUrl}` : "img/fallback.jpeg"} 
+                                    alt={product.name || 'Product image'} 
+                                />
+                            </div>
+                            <br></br>
+                            <br></br>
+                            <div className="product-info">
+                                <h3>{product.name}</h3>
+                                <p>${product.description}</p>
+                                <p>${product.price}</p>
+                                <a href={`buy?pid=${product._id}`}><button>Buy Now</button></a>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p>No products available</p> // Show message if no products are found
+                )
+            )}
         </div>
-        </div>
-    </section>
+    </div>
+</section>
+
 
     <footer>
         <div className="footer-cont">
