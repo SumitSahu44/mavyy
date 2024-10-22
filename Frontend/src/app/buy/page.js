@@ -7,17 +7,16 @@ import "../styles/responsivenav.css"
 import "./buy.css"
 import product from '../product/page';
 
+
 export default function buy(){
   
   const searchParams = useSearchParams();
   const pid = searchParams.get('pid');
-  
   const [data, setData] = useState([]); // Step 1: Initialize state for storing data
   const [message, setMessage] = useState('');
-  const [cartDetails, setCartDetails] = useState(null);  // Store cart details (product and quantity)
   const [quantity, setQuantity] = useState(1);           // Default quantity is 1    
   const [error, setError] = useState('');
-  const [userId, setUserId] = useState('67100e4f93f286ae10f1bcb6'); // Set this to your logged-in user ID
+  const [userId, setUserId] = useState(null); // Set this to your logged-in user ID
   const [productId, setProductId] = useState(`${pid}`);
   useEffect(() => {
     
@@ -43,10 +42,29 @@ export default function buy(){
     window.addEventListener('resize', slideImage);
   }, []);
 
-  // get product details 
+  // get userId and product details 
   useEffect(() => {
    
     const fetchData = async () => {
+   
+   try {
+    const response1 = await fetch(`http://localhost:4000/user/userId`, {
+        method: 'GET',
+        credentials: 'include', // Ensures cookies are sent with the request
+    });
+    
+    if (!response1.ok) {
+        throw new Error('Error fetching user data');
+    }
+    
+        const data1 = await response1.json();
+        setUserId(data1.userId)
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+
+
+
         try {
             const response = await fetch(`http://localhost:4000/user/products?pid=${pid}`);
             if (!response.ok) {
@@ -64,50 +82,15 @@ export default function buy(){
   
 
 
-// add to cart function 
-  // useEffect that will trigger the POST request when cartDetails change
-  useEffect(() => {
-    if (cartDetails) {
-      const addToCart = async () => {
-        try {
-
-          
-          const response = await fetch('http://localhost:4000/user/addtocart', { 
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userId, productId, quantity }),
-        });
-
-          if (response.ok) {
-            setMessage('Product added to cart successfully!');
-          } else {
-            setMessage('Failed to add product to cart.');
-          }
-        } catch (error) {
-          console.error('Error in adding product to cart:', error);
-   setError('An error occurred while adding the product to the cart.');
-   setMessage('');
-        }
-      };
-
-      // Trigger the addToCart function inside useEffect
-      addToCart();
-    }
-  }, [cartDetails]); // Only run useEffect when cartDetails changes
-
-
-
-
 
 
 
  // Function to handle the Add to Cart action
  const handleAddToCartClick = async () => {
   try {
-    if (!userId || !productId || !quantity) {
-      setError('All fields are required');
+
+    if (!userId) {
+      setError('Not Registered: ');
       setMessage('');
       return;
     }
@@ -122,6 +105,7 @@ export default function buy(){
         productId,
         quantity,
       }),
+      credentials: 'include', // This ensures cookies are sent along with the request
     });
 
     const data = await response.json();
@@ -151,9 +135,9 @@ export default function buy(){
             <div class = "product-imgs">
                 <div class = "img-display">
                     <div class = "img-showcase">
-                        <img src = "img/image0.jpeg" alt = "shoe image"/>
-                        <img src = "img/image1.jpeg" alt = "shoe image"/>
-                        <img src = "img/image2.jpeg" alt = "shoe image"/>
+                        <img src = {`img/${data.imageUrl}`} alt = {data.name}/>
+                        <img src = {`img/${data.imageUrl}`} alt = {data.name}/>
+                        <img src = {`img/${data.imageUrl}`} alt = {data.name}/>
                 
                     </div>
                 </div>
@@ -235,7 +219,7 @@ export default function buy(){
               Add to Cart <i class = "fas fa-shopping-cart"></i>
             </button>
             {message && <p style={{ color: 'green' }}>{message}</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: 'red' }}>{error}  <a href={`signup?pid=${pid}`} className='register-link'>Register Here</a> </p>}
               {/* <button type = "button" class = "btn">Compare</button> */}
             </div>
       
