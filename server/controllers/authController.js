@@ -35,6 +35,7 @@ function userControllers(){
             async postSignin(req,res)
             {
                 const {email,password} = req.body;
+                JWT_SECRET = process.env.JSONWEBTOKEN;
                 if(!email  || !password)
                     {
                         return res.json({"error":"All fields are required"});
@@ -46,7 +47,7 @@ function userControllers(){
 
                          // Create a JWT token for the logged-in user
                             const token = jwt.sign({ userId: userFound._id }, JWT_SECRET, {
-                                expiresIn: '1h' // Token valid for 1 hour
+                                expiresIn: '30d' // Set token expiration time
                             });
 
                             // Set the token as a cookie
@@ -54,7 +55,7 @@ function userControllers(){
                                 httpOnly: true,
                                 maxAge: 3600000 // 1 hour
                             });
-                        return  res.send("user found")
+                            return res.json({message: "User Login"})
                        }else{
                         return  res.send("user not found")
                        }

@@ -6,6 +6,7 @@ const cartController = require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
 const authenticateToken = require('../middleware/authenticateToken');
 const userAuthenticateToken = require('../controllers/userAuthenticateToken')
+const checkout = require('../controllers/checkout')
 // Define user routes
 
 // checked routes 
@@ -15,9 +16,11 @@ router.get('/userId',authenticateToken, userAuthenticateToken().userId) ;
 router.get('/cart',authenticateToken, cartController().getcart) ;
 router.post('/addtocart',authenticateToken, cartController().addToCart);
 router.post('/deleteproduct', cartController().deleteProduct)
-router.post('/checkout',orderController().confirmOrder)
+// router.post('/checkout',orderController().confirmOrder)
 router.get('/products', productController().getproducts)
 router.post('/signin', authController().postSignin);
+
+router.post('/checkout', authenticateToken, checkout().payment)
 
 
 
