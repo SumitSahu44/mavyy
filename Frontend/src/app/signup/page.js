@@ -7,7 +7,7 @@ import "./signup.css"
 export default function signup() {
 
     const searchParams = useSearchParams();
-    const pid = searchParams.get('pid');
+    const pid = searchParams ? searchParams.get('pid') : null;;
   
     
     const [name, setUsername] = useState('');
