@@ -2,6 +2,6 @@
 module.exports = {
   experimental: {
     // Enable filesystem-based cache
-    outputFileTracing: true,
+    // outputFileTracing: true,
   },
 };
