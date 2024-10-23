@@ -11,7 +11,7 @@ import product from '../product/page';
 export default function buy(){
   
   const searchParams = useSearchParams();
-  const pid = searchParams.get('pid');
+  const pid = searchParams ? searchParams.get('pid') : null;
   const [data, setData] = useState([]); // Step 1: Initialize state for storing data
   const [message, setMessage] = useState('');
   const [quantity, setQuantity] = useState(1);           // Default quantity is 1    
