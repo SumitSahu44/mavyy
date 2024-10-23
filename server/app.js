@@ -11,14 +11,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
 app.use(express.json());  // To parse JSON bodies
 
-mongoose.connect('mongodb://localhost:27017/Mavy', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
+mongoose.connect(process.env.MONGODB_URL)
+  .then(() => {
     console.log('Connected to MongoDB');
-}).catch((error) => {
-    console.error('Error connecting to MongoDB:', error);
-});
+  })
+  .catch((error) => {
+    console.error('Error connecting to MongoDB:', error.message);
+  });
+
 
 const corsOptions = {
   origin: 'http://localhost:3000', // Replace with your Next.js app's domain

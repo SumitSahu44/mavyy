@@ -131,6 +131,34 @@ function cartController()
                 console.error('Backend error while adding product to cart:', error); // This logs the exact error
                 res.status(500).json({ message: 'Server error', error });
             }
+        },
+        async deleteItems(req,res)
+        {
+            const { userId } = req.params;
+            console.log(userId)
+
+
+            try {
+                // Find the cart by userId and delete all items
+                const cart = await Cart.findOne({ userId });
+        
+                if (!cart) {
+                    return res.status(404).json({ message: 'Cart not found' });
+                }
+        
+                console.log(cart)
+                // Clear the product array
+                cart.products = [];
+        
+                // Save the empty cart
+                await cart.save();
+        
+                res.status(200).json({ message: 'Cart cleared successfully' });
+            } catch (error) {
+                console.error('Error clearing cart:', error);
+                res.status(500).json({ message: 'Failed to clear cart', error });
+            }
+
         }
     }
 }
