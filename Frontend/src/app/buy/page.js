@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,Suspense} from 'react';
 
 import { useSearchParams } from 'next/navigation';
 import "../styles/responsivefooter.css"
@@ -8,8 +8,7 @@ import "./buy.css"
 import product from '../product/page';
 
 
-export default function buy(){
-  
+const Buy=()=>{
   const searchParams = useSearchParams();
   const pid = searchParams ? searchParams.get('pid') : null;
   const [data, setData] = useState([]); // Step 1: Initialize state for storing data
@@ -232,3 +231,11 @@ export default function buy(){
        
     )
 }
+
+const BuyWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+      < Buy/>
+  </Suspense>
+);
+
+export default BuyWrapper;

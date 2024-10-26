@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,Suspense } from "react";
+
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation'; // Import useRouter
 import "./signup.css"
 
-export default function signup() {
-
+const SignupPage=()=>{
     const searchParams = useSearchParams();
     const pid = searchParams ? searchParams.get('pid') : null;;
   
@@ -122,3 +122,11 @@ export default function signup() {
         </div>
     )
 }
+
+const SignupWrapper = () => (
+    <Suspense fallback={<div>Loading...</div>}>
+        <SignupPage />
+    </Suspense>
+);
+
+export default SignupWrapper;
