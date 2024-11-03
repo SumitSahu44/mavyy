@@ -1,4 +1,4 @@
-// File: C:\Users\harsh\Downloads\mavyy-main (1)\mavyy-main\Frontend\src\app\layout.js
+// File: C:\Users\HP\OneDrive\Desktop\Final-mavy\mavyy\Frontend\src\app\layout.js
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

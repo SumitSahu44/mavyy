@@ -108,7 +108,7 @@ export default function product(){
                             <br></br>
                             <div className="product-info">
                                 <h3>{product.name}</h3>
-                                <p>${product.description}</p>
+                                <p>{product.description}</p>
                                 <p>${product.price}</p>
                                 <a href={`buy?pid=${product._id}`}><button>Buy Now</button></a>
                             </div>
