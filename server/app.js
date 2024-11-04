@@ -20,13 +20,13 @@ mongoose.connect(process.env.MONGODB_URL)
   });
 
 
-const corsOptions = {
-  origin: 'https://techiweb.in/', // Replace with your Next.js app's domain
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed methods
-  credentials: true, // Allow cookies to be sent
-};
+// const corsOptions = {
+//   origin: 'https://techiweb.in/', // Replace with your Next.js app's domain
+//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed methods
+//   credentials: true, // Allow cookies to be sent
+// };
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 
 app.set('view engine', 'ejs');
