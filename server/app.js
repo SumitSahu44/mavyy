@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
 
 const corsOptions = {
-  origin: 'http://localhost:3000', // Replace with your Next.js app's domain
+  origin: 'https://techiweb.in/', // Replace with your Next.js app's domain
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed methods
   credentials: true, // Allow cookies to be sent
 };
