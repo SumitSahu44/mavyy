@@ -26,8 +26,12 @@ mongoose.connect(process.env.MONGODB_URL)
 //   credentials: true, // Allow cookies to be sent
 // };
 
-app.use(cors());
+// app.use(cors());
 
+app.use(cors({
+    origin: '*',  // or specify the domain like 'https://your-frontend-domain.com'
+    credentials: true,  // This allows the backend to accept credentials (cookies, etc.)
+}));
 
 app.set('view engine', 'ejs');
 app.use('/user', userRoutes);
