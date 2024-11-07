@@ -28,10 +28,12 @@ mongoose.connect(process.env.MONGODB_URL)
 
 // app.use(cors());
 
-app.use(cors({
-    origin: '*',  // or specify the domain like 'https://your-frontend-domain.com'
-    credentials: true,  // This allows the backend to accept credentials (cookies, etc.)
-}));
+// app.use(cors({
+//     origin: '*',  // or specify the domain like 'https://your-frontend-domain.com'
+//     credentials: true,  // This allows the backend to accept credentials (cookies, etc.)
+// }));
+
+app.use(cors({ credentials: true, origin: 'https://techiweb.in/' }));
 
 app.set('view engine', 'ejs');
 app.use('/user', userRoutes);
