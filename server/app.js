@@ -32,11 +32,11 @@ mongoose.connect(process.env.MONGODB_URL)
 //     origin: '*',  // or specify the domain like 'https://your-frontend-domain.com'
 //     credentials: true,  // This allows the backend to accept credentials (cookies, etc.)
 // }));
-app.use(cors({
-  origin: 'https://techiweb.in/', // Replace with your frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true // If you need to send cookies or headers
-}));
+// app.use(cors({
+//   origin: 'https://techiweb.in/', // Replace with your frontend URL
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   credentials: true // If you need to send cookies or headers
+// }));
 // app.use(cors({ credentials: true, origin: 'http://localhost:3000/' }));
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
