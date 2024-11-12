@@ -58,8 +58,8 @@ function checkout() {
                 const session = await stripe.checkout.sessions.create({
                     line_items:lineItems,
                     mode:'payment',
-                    success_url:`${process.env.FRONTEND_BASE_URL}/login`,
-                    cancel_url:`${process.env.FRONTEND_BASE_URL}/signup`
+                    success_url:`${process.env.FRONTEND_BASE_URL}/success`,
+                    cancel_url:`${process.env.FRONTEND_BASE_URL}/cart`
                 })
             
 

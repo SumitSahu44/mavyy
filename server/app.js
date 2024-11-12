@@ -20,39 +20,16 @@ mongoose.connect(process.env.MONGODB_URL)
   });
 
 
-// const corsOptions = {
-//   origin: 'https://techiweb.in/', // Replace with your Next.js app's domain
-//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed methods
-//   credentials: true, // Allow cookies to be sent
-// };
 
-// app.use(cors());
+  const corsOptions = {
+    origin: 'http://localhost:3000',  // Specify your frontend's URL
+    methods: ['GET', 'POST'],          // Allow specific methods
+    credentials: true                  // Allow credentials (cookies, tokens, etc.)
+  };
+  
+  app.use(cors(corsOptions));
+  
 
-// app.use(cors({
-//     origin: '*',  // or specify the domain like 'https://your-frontend-domain.com'
-//     credentials: true,  // This allows the backend to accept credentials (cookies, etc.)
-// }));
-// app.use(cors({
-//   origin: 'https://techiweb.in/', // Replace with your frontend URL
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-//   credentials: true // If you need to send cookies or headers
-// }));
-// app.use(cors({ credentials: true, origin: 'http://localhost:3000/' }));
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-
-    if (req.method === "OPTIONS") {
-        return res.sendStatus(200);
-    }
-
-    next();
-});
 app.set('view engine', 'ejs');
 app.use('/user', userRoutes);
 
