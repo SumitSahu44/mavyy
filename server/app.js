@@ -23,7 +23,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
   const corsOptions = {
     origin: 'http://localhost:3000',  // Specify your frontend's URL
-    methods: ['GET', 'POST'],          // Allow specific methods
+    methods: ['GET', 'POST', 'DELETE'],          // Allow specific methods
     credentials: true                  // Allow credentials (cookies, tokens, etc.)
   };
   

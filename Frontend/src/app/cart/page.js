@@ -169,6 +169,32 @@ export default function Cart() {
         }
     };
 
+
+
+
+    const removeCartItem = async (itemId) => {
+        try {
+            const response = await fetch(`http://localhost:4000/user/cartDelete?pid=${itemId}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include', // Include cookies
+            });
+          
+            if (response.ok) {
+              const data = await response.json();
+              setCartItems(data.cart.items); // Update the cart items in the state
+             
+            } else {
+              console.error("Failed to remove cart item:", response.statusText);
+            }
+          } catch (error) {
+            console.error("Error removing cart item:", error);
+          }
+      };
+
+
     return (
         <div>
             <header>
@@ -216,14 +242,16 @@ export default function Cart() {
                                                        onChange={(e) => console.log('Handle quantity change')} />
                                             </form>
                                         </div>
-                                        <div className="close">
-                                            <i className="ri-close-line"></i>
+                                        <div className="close" onClick={()=>  removeCartItem(item.productDetails._id)}>
+                                            <i className="text-red-500 bg-transparent"><b>X</b></i>
                                         </div>
                                     </div>
+                                    
                                 ))
                             )
                         )}
                     </div>
+                   
                     <div className="cart-right">
                         <h2>Cart Total</h2>
                         <div className="c-info">
