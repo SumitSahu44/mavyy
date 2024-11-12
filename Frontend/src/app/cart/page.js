@@ -53,7 +53,7 @@ export default function Cart() {
         const fetchData = async () => {
             try {
                 // Fetch userId
-                const response1 = await fetch(`https://mavy-pxtx.onrender.com/user/userId`, {
+                const response1 = await fetch(`http://localhost:4000/user/userId`, {
                     method: 'GET',
                     credentials: 'include', // Ensures cookies are sent with the request
                 });
@@ -66,7 +66,7 @@ export default function Cart() {
                 setUserId(data1.userId);
 
                 // Fetch cart items
-                const response2 = await fetch(`https://mavy-pxtx.onrender.com/user/cart`, {
+                const response2 = await fetch(`http://localhost:4000/user/cart`, {
                     method: 'GET',
                     credentials: 'include', // Ensures cookies are sent with the request
                 });
@@ -81,7 +81,7 @@ export default function Cart() {
                 // Fetch product details for each productId
                 const fetchedProductDetails = await Promise.all(
                     cartData.map(async (item) => {
-                        const productResponse = await fetch(`https://mavy-pxtx.onrender.com/user/products?pid=${item.productId}`, {
+                        const productResponse = await fetch(`http://localhost:4000/user/products?pid=${item.productId}`, {
                             method: 'GET',
                             credentials: 'include'
                         });
@@ -121,7 +121,7 @@ export default function Cart() {
     // Handle checkout
     const handleCheckout = async () => {
         try {
-            const response = await fetch('https://mavy-pxtx.onrender.com/user/checkout', {
+            const response = await fetch('http://localhost:4000/user/checkout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ export default function Cart() {
             if (response.ok) {
               
                 // Call cartDelete API to clear the cart after successful order placement
-                    const deleteResponse = await fetch(`https://mavy-pxtx.onrender.com/user/cartDelete/${userId}`, {
+                    const deleteResponse = await fetch(`http://localhost:4000/user/cartDelete/${userId}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
