@@ -77,7 +77,7 @@ function cartController()
                 if (!cart) {
                   return res.status(404).json({ message: "Cart not found for this user" });
                 }
-            
+          
                 // Return the cart details
                 res.json(cart.products);
               } catch (error) {
@@ -128,8 +128,15 @@ function cartController()
         
                 // Save the updated cart
                 await cart.save();
-        
-                res.status(200).json({ message: 'Product removed from cart', cart });
+              
+                const cartData = await Cart.findOne({ userId });
+                if (!cartData) {
+                  return res.status(404).json({ message: "Cart not found for this user" });
+                }
+                 console.log(cartData.products)
+                // res.json(cartData.products);
+               
+                // res.status(200).json({ message: 'Product removed from cart', cart.products });
             } catch (error) {
                 console.error('Backend error while adding product to cart:', error); // This logs the exact error
                 res.status(500).json({ message: 'Server error', error });

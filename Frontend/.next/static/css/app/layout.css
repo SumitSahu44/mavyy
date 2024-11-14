@@ -533,15 +533,8 @@ video {
 .resize {
   resize: both;
 }
-.bg-white {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
 .bg-transparent {
   background-color: transparent;
-}
-.bg-inherit {
-  background-color: inherit;
 }
 .text-red-500 {
   --tw-text-opacity: 1;
@@ -550,6 +543,9 @@ video {
 .antialiased {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 /* :root {

@@ -115,8 +115,42 @@ export default function Cart() {
             }
         };
 
+
+      
+    
+
         fetchData();
     }, []);
+
+
+    const removeCartItem = async (itemId) => {
+        try {
+            const response = await fetch(`http://localhost:4000/user/cartDelete?pid=${itemId}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include', // Include cookies
+            });
+          
+            if (response.ok) {
+              const data = await response.json();
+            //   alert(JSON.stringify(data.products))
+            const updatedCartItems = cartItems.filter(item => item.productId !== itemId);
+            setCartItems(updatedCartItems); // Update the cart items in the state
+
+            // Remove the item from productsDetails
+            const updatedProductsDetails = productsDetails.filter(product => product.productDetails._id !== itemId);
+            setProductsDetails(updatedProductsDetails); // Update the product details in the state
+        
+
+            } else {
+              console.error("Failed to remove cart item:", response.statusText);
+            }
+          } catch (error) {
+            console.error("Error removing cart item:", error);
+          }
+      };
 
     // Handle checkout
     const handleCheckout = async () => {
@@ -170,31 +204,6 @@ export default function Cart() {
     };
 
 
-
-
-    const removeCartItem = async (itemId) => {
-        try {
-            const response = await fetch(`http://localhost:4000/user/cartDelete?pid=${itemId}`, {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              credentials: 'include', // Include cookies
-            });
-          
-            if (response.ok) {
-              const data = await response.json();
-              setCartItems(data.cart.items); // Update the cart items in the state
-             
-            } else {
-              console.error("Failed to remove cart item:", response.statusText);
-            }
-          } catch (error) {
-            console.error("Error removing cart item:", error);
-          }
-      };
-
-
     return (
         <div>
             <header>
@@ -219,7 +228,7 @@ export default function Cart() {
                     <h1>My Cart</h1>
                 </div>
                 <div className="cart-item">
-                    <div className="cart-left">
+                    <div className="cart-left" key={cartItems.length}>
                         {isLoading ? (
                             <p>Loading your cart...</p> // Show loading indicator while data is being fetched
                         ) : (
@@ -227,7 +236,7 @@ export default function Cart() {
                                 <p>Your cart is empty.</p>
                             ) : (
                                 productsDetails.map((item, index) => (
-                                    <div className="item" key={index}>
+                                    <div className="item"  key={item.productDetails._id}>
                                         <div className="item-img">
                                             <img src={item.productDetails.imageUrl ? `img/${item.productDetails.imageUrl}` : 'img/abena.jpeg'}
                                                  alt={item.productDetails.imageUrl || 'Fallback image'} />
