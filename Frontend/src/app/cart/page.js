@@ -122,10 +122,12 @@ export default function Cart() {
         fetchData();
     }, []);
 
+    
+
 
     const removeCartItem = async (itemId) => {
         try {
-            const response = await fetch(`http://localhost:4000/user/cartDelete?pid=${itemId}`, {
+            const response = await fetch(`http://localhost:4000/user/cartItemDelete?pid=${itemId}`, {
               method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json',
@@ -178,7 +180,7 @@ export default function Cart() {
             if (response.ok) {
               
                 // Call cartDelete API to clear the cart after successful order placement
-                    const deleteResponse = await fetch(`http://localhost:4000/user/cartDelete/${userId}`, {
+                    const deleteResponse = await fetch(`http://localhost:4000/user/cartClear`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
@@ -233,7 +235,7 @@ export default function Cart() {
                             <p>Loading your cart...</p> // Show loading indicator while data is being fetched
                         ) : (
                             productsDetails.length === 0 ? (
-                                <p>Your cart is empty.</p>
+                                <h2 style={{ textAlign: 'center' }}>Your cart is empty.</h2>
                             ) : (
                                 productsDetails.map((item, index) => (
                                     <div className="item"  key={item.productDetails._id}>
@@ -260,8 +262,8 @@ export default function Cart() {
                             )
                         )}
                     </div>
-                   
-                    <div className="cart-right">
+                   {totalBill ? (
+                        <div className="cart-right">
                         <h2>Cart Total</h2>
                         <div className="c-info">
                             <div className="c-r-info">
@@ -284,7 +286,10 @@ export default function Cart() {
                         <div className="order-btn">
                             <button onClick={handleCheckout}>Place Order</button>
                         </div>
-                    </div>
+                        </div>
+
+                   ) : ''}
+                   
                 </div>
             </div>
 

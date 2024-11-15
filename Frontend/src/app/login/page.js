@@ -36,7 +36,7 @@ export default function login(){
 
              router.push('/product'); // Redirect to buy page after success
             } else {
-                alert(data.message  || "Error during Login.");
+                alert(data.message  || "User Not Found!");
             }
         } catch (error) {
             console.error('Error:', error);

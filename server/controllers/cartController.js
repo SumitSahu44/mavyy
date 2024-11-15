@@ -142,6 +142,18 @@ function cartController()
                 res.status(500).json({ message: 'Server error', error });
             }
         },
+   // Add this function to your cart controller
+        async clearCart(req,res) {
+            try {
+                // Assuming you have a Cart model in MongoDB
+                const userId = req.user.userId; // Get the userId from cookies
+            
+                await Cart.deleteMany({ userId });
+                console.log(`Cart cleared for user: ${userId}`);
+            } catch (error) {
+                console.error("Error clearing cart:", error);
+            }
+        }
 
 
 
