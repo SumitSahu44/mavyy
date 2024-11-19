@@ -134,9 +134,9 @@ const Buy=()=>{
             <div class = "product-imgs">
                 <div class = "img-display">
                     <div class = "img-showcase">
-                        <img src = {`img/${data.imageUrl}`} alt = {data.name}/>
-                        <img src = {`img/${data.imageUrl}`} alt = {data.name}/>
-                        <img src = {`img/${data.imageUrl}`} alt = {data.name}/>
+                        <img src = {`img/${data.imageUrl ? data.imageUrl : 'image0.jpeg'}`} alt = {data.name}/>
+                        <img src = {`img/${data.imageUrl ? data.imageUrl : 'image0.jpeg'}`} alt = {data.name}/>
+                        <img src = {`img/${data.imageUrl ? data.imageUrl : 'image0.jpeg'}`} alt = {data.name}/>
                 
                     </div>
                 </div>

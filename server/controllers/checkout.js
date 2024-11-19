@@ -64,6 +64,7 @@ function checkout() {
             
 
                 // Redirect the user to the Stripe Checkout page
+                //    console.log(session)
                 res.json({ url: session.url });
             } catch (error) {
                 console.error("Error during Stripe checkout:", error);

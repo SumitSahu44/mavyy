@@ -209,7 +209,16 @@ useEffect(() => {
                         <div className="product-img" id="p-img1"></div>
                         <div className="product-info">
                             <h3>{product.name}</h3>
-                            <p><b>Description</b>- {product.description}</p>
+                            <p className='product-category'>{product.category}</p>
+                            <p className='product-description'>
+                                {/* <b>Description</b>-   */}
+                                {
+                                     product.description.split(' ').length > 12 
+                                    ? `${product.description.split(' ').slice(0, 12).join(' ')}...` 
+                                    : product.description
+                                }
+                        
+                            </p>
                             <p><b>Price</b>- {product.price}$</p>
                             <a href={`./buy?pid=${product._id}`}><button>Buy Now</button></a>
                         </div>

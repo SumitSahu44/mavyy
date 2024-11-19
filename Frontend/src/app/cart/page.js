@@ -171,32 +171,35 @@ export default function Cart() {
             });
 
             const result = await response.json();
+         
             if (result.url) {
                 // Redirect to Stripe Checkout page
                 window.location.href = result.url;
             } else {
                 console.error("Error creating Stripe Checkout session");
             }
-            if (response.ok) {
+           
+          
+            // if (response.ok) {
               
-                // Call cartDelete API to clear the cart after successful order placement
-                    const deleteResponse = await fetch(`http://localhost:4000/user/cartClear`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        credentials: 'include', // Include cookies
-                    });
+            //     // Call cartDelete API to clear the cart after successful order placement
+            //         const deleteResponse = await fetch(`http://localhost:4000/user/cartClear`, {
+            //             method: 'DELETE',
+            //             headers: {
+            //                 'Content-Type': 'application/json',
+            //             },
+            //             credentials: 'include', // Include cookies
+            //         });
 
-                    if (deleteResponse.ok) {
-                        console.log("Cart items cleared successfully.");
-                        setCartItems([]); // Clear cart items in the frontend
-                    } else {
-                        console.error("Error clearing the cart:", await deleteResponse.json());
-                    }
-                } else {
-                    alert(result.message || "Error during checkout...");
-                }
+            //         if (deleteResponse.ok) {
+            //             console.log("Cart items cleared successfully.");
+            //             setCartItems([]); // Clear cart items in the frontend
+            //         } else {
+            //             console.error("Error clearing the cart:", await deleteResponse.json());
+            //         }
+            //     } else {
+            //         alert(result.message || "Error during checkout...");
+            //     }
 
 
         } catch (error) {
