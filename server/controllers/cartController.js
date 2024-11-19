@@ -77,7 +77,7 @@ function cartController()
                 if (!cart) {
                   return res.status(404).json({ message: "Cart not found for this user" });
                 }
-            
+          
                 // Return the cart details
                 res.json(cart.products);
               } catch (error) {
@@ -86,13 +86,16 @@ function cartController()
               }
             
         },
-       async deleteProduct(req,res)
-        {
-              const {userId, productId} = req.body;
+       async deleteItems(req,res)
+        { 
+        
 
-              try {
+              const {pid} = req.query;
+              const userId = req.user.userId; // Get the userId from cookies
+            
+                try {
                 // Validate if productId is provided
-                if (!productId) {
+                if (!pid) {
                     return res.status(400).json({ message: 'Product ID is required' });
                 }
         
@@ -104,7 +107,7 @@ function cartController()
                 }
         
                 // Check if the product exists in the cart
-                const productIndex = cart.products.findIndex(p => p.productId.toString() === productId);
+                const productIndex = cart.products.findIndex(p => p.productId.toString() === pid);
         
                 if (productIndex === -1) {
                     return res.status(404).json({ message: 'Product not found in the cart' });
@@ -114,52 +117,47 @@ function cartController()
                 cart.products.splice(productIndex, 1);
         
                 // Recalculate total amount if products array is not empty
-                if (cart.products.length > 0) {
-                    cart.totalAmount = cart.products.reduce((total, item) => {
-                        const productPrice = item.price || 0;
-                        return total + productPrice * item.quantity;
-                    }, 0);
-                } else {
-                    cart.totalAmount = 0;
-                }
+                // if (cart.products.length > 0) {
+                //     cart.totalAmount = cart.products.reduce((total, item) => {
+                //         const productPrice = item.price || 0;
+                //         return total + productPrice * item.quantity;
+                //     }, 0);
+                // } else {
+                //     cart.totalAmount = 0;
+                // }
         
                 // Save the updated cart
                 await cart.save();
-        
-                res.status(200).json({ message: 'Product removed from cart', cart });
+              
+                const cartData = await Cart.findOne({ userId });
+                if (!cartData) {
+                  return res.status(404).json({ message: "Cart not found for this user" });
+                }
+                 console.log(cartData.products)
+                // res.json(cartData.products);
+               
+                // res.status(200).json({ message: 'Product removed from cart', cart.products });
             } catch (error) {
                 console.error('Backend error while adding product to cart:', error); // This logs the exact error
                 res.status(500).json({ message: 'Server error', error });
             }
         },
-        async deleteItems(req,res)
-        {
-            const { userId } = req.params;
-            console.log(userId)
-
-
+   // Add this function to your cart controller
+        async clearCart(req,res) {
             try {
-                // Find the cart by userId and delete all items
-                const cart = await Cart.findOne({ userId });
-        
-                if (!cart) {
-                    return res.status(404).json({ message: 'Cart not found' });
-                }
-        
-                console.log(cart)
-                // Clear the product array
-                cart.products = [];
-        
-                // Save the empty cart
-                await cart.save();
-        
-                res.status(200).json({ message: 'Cart cleared successfully' });
+                // Assuming you have a Cart model in MongoDB
+                const userId = req.user.userId; // Get the userId from cookies
+            
+                await Cart.deleteMany({ userId });
+                console.log(`Cart cleared for user: ${userId}`);
             } catch (error) {
-                console.error('Error clearing cart:', error);
-                res.status(500).json({ message: 'Failed to clear cart', error });
+                console.error("Error clearing cart:", error);
             }
-
         }
+
+
+
+      
     }
 }
 

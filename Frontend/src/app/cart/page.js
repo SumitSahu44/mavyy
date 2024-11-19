@@ -115,8 +115,44 @@ export default function Cart() {
             }
         };
 
+
+      
+    
+
         fetchData();
     }, []);
+
+    
+
+
+    const removeCartItem = async (itemId) => {
+        try {
+            const response = await fetch(`http://localhost:4000/user/cartItemDelete?pid=${itemId}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include', // Include cookies
+            });
+          
+            if (response.ok) {
+              const data = await response.json();
+            //   alert(JSON.stringify(data.products))
+            const updatedCartItems = cartItems.filter(item => item.productId !== itemId);
+            setCartItems(updatedCartItems); // Update the cart items in the state
+
+            // Remove the item from productsDetails
+            const updatedProductsDetails = productsDetails.filter(product => product.productDetails._id !== itemId);
+            setProductsDetails(updatedProductsDetails); // Update the product details in the state
+        
+
+            } else {
+              console.error("Failed to remove cart item:", response.statusText);
+            }
+          } catch (error) {
+            console.error("Error removing cart item:", error);
+          }
+      };
 
     // Handle checkout
     const handleCheckout = async () => {
@@ -135,32 +171,35 @@ export default function Cart() {
             });
 
             const result = await response.json();
+         
             if (result.url) {
                 // Redirect to Stripe Checkout page
                 window.location.href = result.url;
             } else {
                 console.error("Error creating Stripe Checkout session");
             }
-            if (response.ok) {
+           
+          
+            // if (response.ok) {
               
-                // Call cartDelete API to clear the cart after successful order placement
-                    const deleteResponse = await fetch(`http://localhost:4000/user/cartDelete/${userId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        credentials: 'include', // Include cookies
-                    });
+            //     // Call cartDelete API to clear the cart after successful order placement
+            //         const deleteResponse = await fetch(`http://localhost:4000/user/cartClear`, {
+            //             method: 'DELETE',
+            //             headers: {
+            //                 'Content-Type': 'application/json',
+            //             },
+            //             credentials: 'include', // Include cookies
+            //         });
 
-                    if (deleteResponse.ok) {
-                        console.log("Cart items cleared successfully.");
-                        setCartItems([]); // Clear cart items in the frontend
-                    } else {
-                        console.error("Error clearing the cart:", await deleteResponse.json());
-                    }
-                } else {
-                    alert(result.message || "Error during checkout...");
-                }
+            //         if (deleteResponse.ok) {
+            //             console.log("Cart items cleared successfully.");
+            //             setCartItems([]); // Clear cart items in the frontend
+            //         } else {
+            //             console.error("Error clearing the cart:", await deleteResponse.json());
+            //         }
+            //     } else {
+            //         alert(result.message || "Error during checkout...");
+            //     }
 
 
         } catch (error) {
@@ -168,6 +207,7 @@ export default function Cart() {
             alert("Error occurred while placing the order.");
         }
     };
+
 
     return (
         <div>
@@ -193,15 +233,15 @@ export default function Cart() {
                     <h1>My Cart</h1>
                 </div>
                 <div className="cart-item">
-                    <div className="cart-left">
+                    <div className="cart-left" key={cartItems.length}>
                         {isLoading ? (
                             <p>Loading your cart...</p> // Show loading indicator while data is being fetched
                         ) : (
                             productsDetails.length === 0 ? (
-                                <p>Your cart is empty.</p>
+                                <h2 style={{ textAlign: 'center' }}>Your cart is empty.</h2>
                             ) : (
                                 productsDetails.map((item, index) => (
-                                    <div className="item" key={index}>
+                                    <div className="item"  key={item.productDetails._id}>
                                         <div className="item-img">
                                             <img src={item.productDetails.imageUrl ? `img/${item.productDetails.imageUrl}` : 'img/abena.jpeg'}
                                                  alt={item.productDetails.imageUrl || 'Fallback image'} />
@@ -216,15 +256,17 @@ export default function Cart() {
                                                        onChange={(e) => console.log('Handle quantity change')} />
                                             </form>
                                         </div>
-                                        <div className="close">
-                                            <i className="ri-close-line"></i>
+                                        <div className="close" onClick={()=>  removeCartItem(item.productDetails._id)}>
+                                            <i className="text-red-500 bg-transparent"><b>X</b></i>
                                         </div>
                                     </div>
+                                    
                                 ))
                             )
                         )}
                     </div>
-                    <div className="cart-right">
+                   {totalBill ? (
+                        <div className="cart-right">
                         <h2>Cart Total</h2>
                         <div className="c-info">
                             <div className="c-r-info">
@@ -247,7 +289,10 @@ export default function Cart() {
                         <div className="order-btn">
                             <button onClick={handleCheckout}>Place Order</button>
                         </div>
-                    </div>
+                        </div>
+
+                   ) : ''}
+                   
                 </div>
             </div>
 

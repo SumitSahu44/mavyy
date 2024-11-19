@@ -58,12 +58,13 @@ function checkout() {
                 const session = await stripe.checkout.sessions.create({
                     line_items:lineItems,
                     mode:'payment',
-                    success_url:`${process.env.FRONTEND_BASE_URL}/login`,
-                    cancel_url:`${process.env.FRONTEND_BASE_URL}/signup`
+                    success_url:`${process.env.FRONTEND_BASE_URL}/success`,
+                    cancel_url:`${process.env.FRONTEND_BASE_URL}/cart`
                 })
             
 
                 // Redirect the user to the Stripe Checkout page
+                //    console.log(session)
                 res.json({ url: session.url });
             } catch (error) {
                 console.error("Error during Stripe checkout:", error);

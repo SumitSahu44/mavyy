@@ -15,8 +15,8 @@ router.post('/product/add', productController().addProduct);
 router.get('/userId',authenticateToken, userAuthenticateToken().userId) ;
 router.get('/cart',authenticateToken, cartController().getcart) ;
 router.post('/addtocart',authenticateToken, cartController().addToCart);
-router.delete('/cartDelete/:userId', authenticateToken, cartController().deleteItems)
-router.post('/deleteproduct', cartController().deleteProduct)
+router.delete('/cartItemDelete', authenticateToken, cartController().deleteItems)
+router.delete('/cartClear', authenticateToken, cartController().clearCart)
 // router.post('/checkout',orderController().confirmOrder)
 router.get('/products', productController().getproducts)
 router.post('/signin', authController().postSignin);
