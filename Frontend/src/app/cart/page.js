@@ -7,6 +7,8 @@ import { useGSAP } from "@gsap/react";
 import { gsap, Power3, Circ, Expo } from 'gsap';
 import { RiMenu3Fill } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
+import { ToastContainer, toast } from "react-toastify"; // Import Toastify
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 
 export default function Cart() {
     const [userId, setUserId] = useState(null); // Set this to your logged-in user ID 
@@ -137,6 +139,7 @@ export default function Cart() {
           
             if (response.ok) {
               const data = await response.json();
+              toast.success("Product Deleted!");
             //   alert(JSON.stringify(data.products))
             const updatedCartItems = cartItems.filter(item => item.productId !== itemId);
             setCartItems(updatedCartItems); // Update the cart items in the state
@@ -144,7 +147,12 @@ export default function Cart() {
             // Remove the item from productsDetails
             const updatedProductsDetails = productsDetails.filter(product => product.productDetails._id !== itemId);
             setProductsDetails(updatedProductsDetails); // Update the product details in the state
-        
+         
+            let total = 0;
+            updatedProductsDetails.forEach(element => {
+                total += element.quantity * element.productDetails.price;
+            });
+            setTotalBill(total);
 
             } else {
               console.error("Failed to remove cart item:", response.statusText);
@@ -179,29 +187,6 @@ export default function Cart() {
                 console.error("Error creating Stripe Checkout session");
             }
            
-          
-            // if (response.ok) {
-              
-            //     // Call cartDelete API to clear the cart after successful order placement
-            //         const deleteResponse = await fetch(`http://localhost:4000/user/cartClear`, {
-            //             method: 'DELETE',
-            //             headers: {
-            //                 'Content-Type': 'application/json',
-            //             },
-            //             credentials: 'include', // Include cookies
-            //         });
-
-            //         if (deleteResponse.ok) {
-            //             console.log("Cart items cleared successfully.");
-            //             setCartItems([]); // Clear cart items in the frontend
-            //         } else {
-            //             console.error("Error clearing the cart:", await deleteResponse.json());
-            //         }
-            //     } else {
-            //         alert(result.message || "Error during checkout...");
-            //     }
-
-
         } catch (error) {
             console.error('Error during checkout:::', error);
             alert("Error occurred while placing the order.");
@@ -326,7 +311,9 @@ export default function Cart() {
                         </div>
                     </div>
                 </div>
+              
             </footer>
+            <ToastContainer />
         </div>
     );
 }

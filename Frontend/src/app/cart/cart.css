@@ -48,10 +48,11 @@ body{
     font-size: 20px;
     position: absolute;
     right: 15px;
+    cursor: pointer;
     top: 15px;
 }
 .item-img img{
-    width: 120px;
+    width: 350px;
     height: 150px;
     object-fit: cover;
     border-radius: 20px;
@@ -130,7 +131,7 @@ input{
 }
 @media screen and (max-width:1000px){
     .item-img img{
-        width: 90px;
+        width: 300px;
         height: 120px;
     }
     .card-right{
@@ -151,7 +152,7 @@ input{
 } 
 @media screen and (max-width:600px){
     .item-img img{
-        width: 70px;
+        width: 300px;
         height: 100px;
         border-radius: 10px;
     }
@@ -160,7 +161,7 @@ input{
 
     }
     .item-info p{
-        font-size: 15px;
+        font-size: 12px;
     }
 }
 @media screen and (max-width:450px){
@@ -171,14 +172,14 @@ input{
         width: 90vw;
     }
     .item-img img{
-        width: 60px;
+        width: 350px;
         height: 80px;
     }
     .item-info h3{
         font-size: 16px;
     }
     .item-info p{
-        font-size: 14px;
+        font-size: 10px;
     }
     .c-info p{
         font-size: 14px;

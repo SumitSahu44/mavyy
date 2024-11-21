@@ -116,17 +116,6 @@ function cartController()
                 // Remove the product from the cart
                 cart.products.splice(productIndex, 1);
         
-                // Recalculate total amount if products array is not empty
-                // if (cart.products.length > 0) {
-                //     cart.totalAmount = cart.products.reduce((total, item) => {
-                //         const productPrice = item.price || 0;
-                //         return total + productPrice * item.quantity;
-                //     }, 0);
-                // } else {
-                //     cart.totalAmount = 0;
-                // }
-        
-                // Save the updated cart
                 await cart.save();
               
                 const cartData = await Cart.findOne({ userId });
@@ -134,7 +123,7 @@ function cartController()
                   return res.status(404).json({ message: "Cart not found for this user" });
                 }
                  console.log(cartData.products)
-                // res.json(cartData.products);
+                res.json(cartData.products);
                
                 // res.status(200).json({ message: 'Product removed from cart', cart.products });
             } catch (error) {

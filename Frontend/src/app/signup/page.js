@@ -3,6 +3,8 @@ import React, { useState,Suspense } from "react";
 
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation'; // Import useRouter
+import { ToastContainer, toast } from "react-toastify"; // Import Toastify
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 import "./signup.css"
 
 const SignupPage=()=>{
@@ -21,7 +23,7 @@ const SignupPage=()=>{
         e.preventDefault(); // Prevent form from refreshing the page
 
         if (!isChecked) {
-            alert("You must agree to the terms and conditions.");
+            toast.error("You must agree to the terms and conditions.");
             return;
         }
 
@@ -45,15 +47,17 @@ const SignupPage=()=>{
             const data = await response.json();
                console.log("data"+ response)
             if (response.ok) {
-                alert("User registered successfully!");
-
-             router.push(pid ? `/buy?pid=${pid}` : '/'); // Redirect to buy page after success
+                toast.success("User registered successfully!");
+                setTimeout(() => {
+                    router.push(pid ? `/buy?pid=${pid}` : "/");
+                }, 2000); // Redirect after 2 seconds
+                
             } else {
-                alert(data.message  || "Error during registration.");
+                toast.error(data.message || "Error during registration.");
             }
         } catch (error) {
             console.error('Error:', error);
-            alert("Error occurred while registering the user.");
+            toast.error("Error occurred while registering the user.");
         }
     };
 
@@ -119,6 +123,7 @@ const SignupPage=()=>{
                     </div>
                 </form>
             </div>
+            <ToastContainer />
         </div>
     )
 }
