@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect ,Suspense} from 'react';
-
+import { ToastContainer, toast } from "react-toastify"; // Import Toastify
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 import { useSearchParams } from 'next/navigation';
 import "../styles/responsivefooter.css"
 import "../styles/responsivenav.css"
@@ -12,7 +13,7 @@ const Buy=()=>{
   const searchParams = useSearchParams();
   const pid = searchParams ? searchParams.get('pid') : null;
   const [data, setData] = useState([]); // Step 1: Initialize state for storing data
-  const [message, setMessage] = useState('');
+
   const [quantity, setQuantity] = useState(1);           // Default quantity is 1    
   const [error, setError] = useState('');
   const [userId, setUserId] = useState(null); // Set this to your logged-in user ID
@@ -89,9 +90,8 @@ const Buy=()=>{
   try {
 
     if (!userId) {
-      setError('Not Registered: ');
-      setMessage('');
-      return;
+       toast.error("User Not Registered");
+       return;
     }
     // Make an API call to the addToCart endpoint
     const response = await fetch('http://localhost:4000/user/addtocart', {
@@ -111,17 +111,15 @@ const Buy=()=>{
 
     if (response.ok) {
       // Show success message
-      setMessage('Product added to cart successfully!');
-      setError('');
+      toast.success("Product added to cart successfully!");
     } else {
       // Handle errors
-      setError(data.message || 'Error adding product to cart');
-      setMessage('');
+      toast.error(data.message || 'Error adding product to cart');
     }
   } catch (error) {
     console.error('Error in adding product to cart:', error);
-    setError('An error occurred while adding the product to the cart.');
-    setMessage('');
+    toast.error('An error occurred while adding the product to the cart.');
+    
   }
 };
 
@@ -134,9 +132,10 @@ const Buy=()=>{
             <div class = "product-imgs">
                 <div class = "img-display">
                     <div class = "img-showcase">
-                        <img src = {`img/${data.imageUrl ? data.imageUrl : 'image0.jpeg'}`} alt = {data.name}/>
-                        <img src = {`img/${data.imageUrl ? data.imageUrl : 'image0.jpeg'}`} alt = {data.name}/>
-                        <img src = {`img/${data.imageUrl ? data.imageUrl : 'image0.jpeg'}`} alt = {data.name}/>
+              
+                        <img src = {`img/${data.imageUrl}`} alt = {data.name}/>
+                        <img src = {`img/${data.imageUrl}`} alt = {data.name}/>
+                        <img src = {`img/${data.imageUrl}`} alt = {data.name}/>
                 
                     </div>
                 </div>
@@ -217,15 +216,13 @@ const Buy=()=>{
              <button type = "button" onClick={handleAddToCartClick} class = "btn">
               Add to Cart <i class = "fas fa-shopping-cart"></i>
             </button>
-            {message && <p style={{ color: 'green' }}>{message}</p>}
-            {error && <p style={{ color: 'red' }}>{error}  <a href={`signup?pid=${pid}`} className='register-link'>Register Here</a> </p>}
-              {/* <button type = "button" class = "btn">Compare</button> */}
-            </div>
+           </div>
       
            
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
         
        
