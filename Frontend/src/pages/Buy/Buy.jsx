@@ -44,7 +44,7 @@ const Buy=()=>{
     const fetchData = async () => {
    
    try {
-    const response1 = await fetch(`http://localhost:4000/user/userId`, {
+    const response1 = await fetch(`https://mavy-pxtx.onrender.com/user/userId`, {
         method: 'GET',
         credentials: 'include', // Ensures cookies are sent with the request
     });
@@ -62,7 +62,7 @@ const Buy=()=>{
 
 
         try {
-            const response = await fetch(`http://localhost:4000/user/products?pid=${pid}`);
+            const response = await fetch(`https://mavy-pxtx.onrender.com/user/products?pid=${pid}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -95,7 +95,7 @@ const Buy=()=>{
       return;
     }
     // Make an API call to the addToCart endpoint
-    const response = await fetch('http://localhost:4000/user/addtocart', {
+    const response = await fetch('https://mavy-pxtx.onrender.com/user/addtocart', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

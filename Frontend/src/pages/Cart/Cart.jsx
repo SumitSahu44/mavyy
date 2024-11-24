@@ -55,7 +55,7 @@ import { IoMdClose } from "react-icons/io";
         const fetchData = async () => {
             try {
                 // Fetch userId
-                const response1 = await fetch(`http://localhost:4000/user/userId`, {
+                const response1 = await fetch(`https://mavy-pxtx.onrender.com/user/userId`, {
                     method: 'GET',
                     credentials: 'include', // Ensures cookies are sent with the request
                 });
@@ -68,7 +68,7 @@ import { IoMdClose } from "react-icons/io";
                 setUserId(data1.userId);
 
                 // Fetch cart items
-                const response2 = await fetch(`http://localhost:4000/user/cart`, {
+                const response2 = await fetch(`https://mavy-pxtx.onrender.com/user/cart`, {
                     method: 'GET',
                     credentials: 'include', // Ensures cookies are sent with the request
                 });
@@ -83,7 +83,7 @@ import { IoMdClose } from "react-icons/io";
                 // Fetch product details for each productId
                 const fetchedProductDetails = await Promise.all(
                     cartData.map(async (item) => {
-                        const productResponse = await fetch(`http://localhost:4000/user/products?pid=${item.productId}`, {
+                        const productResponse = await fetch(`https://mavy-pxtx.onrender.com/user/products?pid=${item.productId}`, {
                             method: 'GET',
                             credentials: 'include'
                         });
@@ -129,7 +129,7 @@ import { IoMdClose } from "react-icons/io";
 
     const removeCartItem = async (itemId) => {
         try {
-            const response = await fetch(`http://localhost:4000/user/cartItemDelete?pid=${itemId}`, {
+            const response = await fetch(`https://mavy-pxtx.onrender.com/user/cartItemDelete?pid=${itemId}`, {
               method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ import { IoMdClose } from "react-icons/io";
       // Handle checkout
     const handleCheckout = async () => {
         try {
-            const response = await fetch('http://localhost:4000/user/checkout', {
+            const response = await fetch('https://mavy-pxtx.onrender.com/user/checkout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
