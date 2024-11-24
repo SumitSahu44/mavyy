@@ -57,7 +57,7 @@ function userControllers(){
                             });
                             return res.json({message: "User Login"})
                        }else{
-                        return  res.send("user not found")
+                      return res.status(404).json({ message: "User not found" });
                        }
                     } catch (error) {
                         res.json({ message: "Login failed", error: error.message });
