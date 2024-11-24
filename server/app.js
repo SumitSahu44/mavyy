@@ -22,7 +22,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
 
   const corsOptions = {
-    origin: 'https://techiweb.in/',  // Specify your frontend's URL
+    origin: 'https://techiweb.in',  // Specify your frontend's URL
     methods: ['GET', 'POST', 'DELETE'],          // Allow specific methods
     credentials: true                  // Allow credentials (cookies, tokens, etc.)
   };
