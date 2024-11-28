@@ -18,14 +18,14 @@ function userControllers(){
                             expiresIn: '30d' // Set token expiration time
                         });
 
-                        res.cookie('token', token, {
-                               maxAge: 3600000 * 720 , // 1 hour in milliseconds
-                               httpOnly: true
-                        });
+                        // res.cookie('token', token, {
+                        //        maxAge: 3600000 * 720 , // 1 hour in milliseconds
+                        //        httpOnly: true
+                        // });
 
                         
                    
-                    return res.json({message: "User Created", userId: userCreated._id})
+                    return res.json({message: "User Created", userId: userCreated._id, token: token})
                  } catch (error) {
                     return  res.status(500).json({error})
                  }
@@ -51,13 +51,13 @@ function userControllers(){
                             });
 
                             // Set the token as a cookie
-                            res.cookie('token', token, {
-                                httpOnly: true,
-                                maxAge: 3600000 // 1 hour
-                            });
-                            return res.json({message: "User Login"})
+                            // res.cookie('token', token, {
+                            //     httpOnly: true,
+                            //     maxAge: 3600000 // 1 hour
+                            // });
+                            return res.json({message: "User Login", token : token})
                        }else{
-                        return  res.send("user not found")
+                        return res.status(404).json({ message: "User not found" });
                        }
                     } catch (error) {
                         res.json({ message: "Login failed", error: error.message });
@@ -65,7 +65,7 @@ function userControllers(){
             },
             async checkAuth(req,res)
             {
-                const token = req.cookies.token;
+                const token = req.headers.authorization?.split(" ")[1];
 
                 if (!token) {
                     return res.json({ message: "Not logged in" });
