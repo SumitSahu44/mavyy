@@ -5,7 +5,9 @@ function cartController()
 {
     return {
         async addToCart(req, res) {
-            const { userId, productId, quantity } = req.body;
+            const { productId, quantity } = req.body;
+            const userId = req.user.userId; // Extract userId from the decoded token
+
         
             // Debugging: Log the request body and field types
             // console.log('Request body:', req.body);
