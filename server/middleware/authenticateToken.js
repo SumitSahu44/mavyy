@@ -2,10 +2,10 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JSONWEBTOKEN;
 
 function authenticateToken(req, res, next) {
-    const token = req.cookies.token; // Assuming the JWT is stored in a cookie
+    const token = req.headers.authorization?.split(' ')[1]; // Assuming the JWT is stored in a cookie
 
     if (!token) {
-        return res.status(403).json({ message: 'User not authenticated' });
+        return res.status(403).json({ message: 'Authentication token is missing' });
     }
 
     try {
