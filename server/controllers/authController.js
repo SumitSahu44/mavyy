@@ -23,7 +23,7 @@ function userControllers(){
                         //        httpOnly: true
                         // });
 
-                        
+                        //return token to the frontend
                    
                     return res.json({message: "User Created", userId: userCreated._id, token: token})
                  } catch (error) {
