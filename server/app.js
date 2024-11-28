@@ -21,14 +21,33 @@ mongoose.connect(process.env.MONGODB_URL)
 
 
 
-  const corsOptions = {
-    origin: 'http://localhost:5173/',  // Specify your frontend's URL
-    methods: ['GET', 'POST', 'DELETE'],          // Allow specific methods
-    credentials: true                  // Allow credentials (cookies, tokens, etc.)
-  };
+  // const corsOptions = {
+  //   origin: 'http://localhost:5173/',  // Specify your frontend's URL
+  //   methods: ['GET', 'POST', 'DELETE'],          // Allow specific methods
+  //   credentials: true                  // Allow credentials (cookies, tokens, etc.)
+  // };
   
-  app.use(cors(corsOptions));
-  
+  // app.use(cors(corsOptions));
+
+const allowedOrigins = ['https://techiweb.in', 'http://localhost:5173']; // Add all allowed origins here
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Check if the incoming origin is in the allowedOrigins array or if it's undefined (for non-browser clients)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true); // Allow the request
+    } else {
+      callback(new Error('Not allowed by CORS')); // Reject the request
+    }
+  },
+  methods: ['GET', 'POST', 'DELETE'], // Allow specific HTTP methods
+  credentials: true, // Allow credentials (cookies, tokens, etc.)
+};
+
+app.use(cors(corsOptions));
+
+
+
 
 app.set('view engine', 'ejs');
 app.use('/user', userRoutes);
