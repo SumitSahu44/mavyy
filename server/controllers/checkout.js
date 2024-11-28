@@ -62,7 +62,7 @@ function checkout() {
                     cancel_url:`${process.env.FRONTEND_BASE_URL}/cart`
                 })
                 // Redirect the user to the Stripe Checkout page
-                //    console.log(session)
+              
                 res.json({ url: session.url });
             } catch (error) {
                 console.error("Error during Stripe checkout:", error);
