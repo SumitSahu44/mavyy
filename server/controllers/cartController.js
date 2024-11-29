@@ -5,7 +5,7 @@ function cartController()
 {
     return {
         async addToCart(req, res) {
-            const { productId, quantity } = req.body;
+            const { productId, quantity, size } = req.body;
             const userId = req.user.userId; // Extract userId from the decoded token
 
         
@@ -14,7 +14,7 @@ function cartController()
             // console.log('userId:', userId, 'productId:', productId, 'quantity:', quantity); // This line should work without issues
         
             // Validate input
-            if (!userId || !productId || quantity === undefined || quantity <= 0) {
+            if (!userId || !productId || quantity === undefined || !size || quantity <= 0) {
                 return res.status(400).json({ error: 'All fields are required and quantity must be greater than 0' });
             }
         
@@ -36,6 +36,7 @@ function cartController()
                     cart = new Cart({
                         userId,
                         products: [],
+                        size,
                         totalAmount: 0
                     });
                 }
