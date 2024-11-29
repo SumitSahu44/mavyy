@@ -36,21 +36,20 @@ function cartController()
                     cart = new Cart({
                         userId,
                         products: [],
-                        size,
                         totalAmount: 0
                     });
                 }
         
-                // Check if the product already exists in the cart
-                const existingProductIndex = cart.products.findIndex(p => p.productId.toString() === productId);
-        
-                if (existingProductIndex !== -1) {
-                    // If product exists, update the quantity
-                    cart.products[existingProductIndex].quantity = Number(cart.products[existingProductIndex].quantity) + Number(quantity);
-                } else {
-                    // If product does not exist, add it to the cart
-                    cart.products.push({ productId, quantity });
-                }
+                    // Check if the product with the specific size already exists in the cart
+                    const existingProductIndex = cart.products.findIndex(p => p.productId.toString() === productId && p.size === size);
+            
+                    if (existingProductIndex !== -1) {
+                        // If product exists, update the quantity for the specific size
+                        cart.products[existingProductIndex].quantity += Number(quantity);
+                    } else {
+                        // If product does not exist with that size, add it to the cart
+                        cart.products.push({ productId, quantity, size });
+                    }
         
                 // Uncomment if you want to recalculate the total amount
                 // Assuming you have a price field in your ProductModel
