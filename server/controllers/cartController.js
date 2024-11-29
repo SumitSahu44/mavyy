@@ -13,7 +13,7 @@ function cartController()
             // console.log('Request body:', req.body);
             // console.log('userId:', userId, 'productId:', productId, 'quantity:', quantity); // This line should work without issues
         
-            // Validate input
+            // Validate inputs
             if (!userId || !productId || quantity === undefined || !size || quantity <= 0) {
                 return res.status(400).json({ error: 'All fields are required and quantity must be greater than 0' });
             }
