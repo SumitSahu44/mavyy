@@ -9,8 +9,11 @@ const userRoutes = require('./routes/userRoutes');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
-app.use(express.json());  // To parse JSON bodies
+// Middleware to parse JSON data
+app.use(express.json());
 
+// Middleware to parse x-www-form-urlencoded data
+app.use(express.urlencoded({ extended: true }));
 mongoose.connect(process.env.MONGODB_URL)
   .then(() => {
     console.log('Connected to MongoDB');
