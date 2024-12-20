@@ -202,7 +202,7 @@ useEffect(() => {
                 Featured Products
             </h1>
         </div>
-    
+    // get all product 
        <div className="item-cont">
                 {products.map(product => (
                     <div className="item"  key={product.id}>
