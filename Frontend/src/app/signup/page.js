@@ -18,7 +18,7 @@ const SignupPage=()=>{
     const [isChecked, setIsChecked] = useState(false);
     const router = useRouter(); // Initialize useRouter
 
-
+  // signup handler 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent form from refreshing the page
 
