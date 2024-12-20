@@ -225,6 +225,7 @@ export default function Cart() {
                             productsDetails.length === 0 ? (
                                 <h2 style={{ textAlign: 'center' }}>Your cart is empty.</h2>
                             ) : (
+                            // show cart details 
                                 productsDetails.map((item, index) => (
                                     <div className="item"  key={item.productDetails._id}>
                                         <div className="item-img">
