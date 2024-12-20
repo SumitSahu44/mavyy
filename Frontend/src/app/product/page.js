@@ -49,6 +49,7 @@ export default function product(){
     
     })
 
+     // get products
     useEffect(() => {
         const fetchData = async () => {
             try {
