@@ -126,7 +126,7 @@ export default function Cart() {
 
     
 
-
+  // remove cart logic 
     const removeCartItem = async (itemId) => {
         try {
             const response = await fetch(`http://localhost:4000/user/cartItemDelete?pid=${itemId}`, {
