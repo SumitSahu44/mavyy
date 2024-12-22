@@ -9,7 +9,7 @@ import { IoMdClose } from "react-icons/io";
 
 export default function Home() {
     const [products, setProducts] = useState([]);
-
+  // gsap animation 
   useGSAP(()=>{
         let menu=document.querySelector("#nav i");
         let close=document.querySelector("#full i");
