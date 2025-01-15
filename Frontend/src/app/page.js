@@ -206,7 +206,9 @@ useEffect(() => {
        <div className="item-cont">
                 {products.map(product => (
                     <div className="item"  key={product.id}>
-                        <div className="product-img" id="p-img1"></div>
+                        <div className="product-img" id="p-img1">
+                        <img src={`img/${imageUrl}`} />
+                        </div>
                         <div className="product-info">
                             <h3>{product.name}</h3>
                             <p className='product-category'>{product.category}</p>

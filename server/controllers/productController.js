@@ -31,6 +31,7 @@ function product()
         ,
        async addProduct(req,res)
         {
+
             const { name, price, description, category, size, imageUrl } = req.body;
 
             try {
