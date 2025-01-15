@@ -126,7 +126,7 @@ export default function Cart() {
 
     
 
-
+  // remove cart logic 
     const removeCartItem = async (itemId) => {
         try {
             const response = await fetch(`http://localhost:4000/user/cartItemDelete?pid=${itemId}`, {
@@ -225,6 +225,7 @@ export default function Cart() {
                             productsDetails.length === 0 ? (
                                 <h2 style={{ textAlign: 'center' }}>Your cart is empty.</h2>
                             ) : (
+                            // show cart details 
                                 productsDetails.map((item, index) => (
                                     <div className="item"  key={item.productDetails._id}>
                                         <div className="item-img">

@@ -10,6 +10,7 @@ export default function login(){
     const [password, setPassword] = useState('');
     const router = useRouter(); // Initialize useRouter
 
+    // login handler 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent form from refreshing the page
 

@@ -49,6 +49,7 @@ export default function product(){
     
     })
 
+     // get products
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -96,6 +97,7 @@ export default function product(){
                 <p>Loading products...</p> // Show loading message while fetching data
             ) : (
                 products.length > 0 ? (
+                // show all product 
                     products.map((product, index) => (
                         <div className="item" key={index}>
                             <div className="product-img">
