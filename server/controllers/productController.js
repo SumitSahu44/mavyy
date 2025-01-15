@@ -32,11 +32,11 @@ function product()
        async addProduct(req,res)
         {
 
-            const { name, price, description, category, size, imageUrls } = req.body;
+            const { name, price, description, category, size, imageUrl } = req.body;
 
             try {
                 // Validate required fields
-                if (!name || !price || !description || !category || !size || !imageUrls) {
+                if (!name || !price || !description || !category || !size) {
 
                     return res.status(400).json({ message: 'Please fill in all required fields' });
                 }
