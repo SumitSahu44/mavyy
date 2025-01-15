@@ -37,7 +37,6 @@ function product()
             try {
                 // Validate required fields
                 if (!name || !price || !description || !category || !size) {
-
                     return res.status(400).json({ message: 'Please fill in all required fields' });
                 }
         
