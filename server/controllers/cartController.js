@@ -109,7 +109,7 @@ function cartController()
                 }
         
                 // Check if the product exists in the cart
-                const productIndex = cart.products.findIndex(p => p.productId.toString() === pid);
+                const productIndex = cart.products.findIndex(p => p._id.toString() === pid);
         
                 if (productIndex === -1) {
                     return res.status(404).json({ message: 'Product not found in the cart' });
