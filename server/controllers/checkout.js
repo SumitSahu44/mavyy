@@ -42,16 +42,17 @@ function checkout() {
                         // Fetch product details from the database
                         const productDetails = await getProductById(item.productId);
 
-                        return {
+                     return {
                             price_data: {
                                 currency: 'usd',
                                 product_data: {
                                     name: productDetails.name, // Use product name from DB
                                 },
-                                unit_amount: productDetails.price * 100, // Convert price to cents for Stripe
+                                unit_amount: Math.floor(productDetails.price) * 100 + 99, // Ensures price ends in .99
                             },
                             quantity: item.quantity, // Use the quantity from the cart item
                         };
+
                     })
                 );
                 // Create Stripe checkout session
