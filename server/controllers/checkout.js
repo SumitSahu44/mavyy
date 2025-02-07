@@ -47,6 +47,10 @@ function checkout() {
                                 currency: 'usd',
                                 product_data: {
                                     name: productDetails.name, // Use product name from DB
+                                    metadata: {
+                                        size: item.size,   // Passing size
+                                        color: item.color, // Passing color
+                                    }
                                 },
                                 unit_amount: (["S", "M", "L"].includes(item.size) ? 24 : 34) * 100 + 99, // Set price based on size and ensure .99
                             },
