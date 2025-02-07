@@ -1,9 +1,0 @@
-version: 1
-services:
-  - type: web
-    name: mavy_frontend
-    env: node
-    buildCommand: npm run build
-    startCommand: npm start
-    cache:
-      - .next/cache
