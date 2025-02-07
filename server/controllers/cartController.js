@@ -5,7 +5,7 @@ function cartController()
 {
     return {
         async addToCart(req, res) {
-            const { productId, quantity, size } = req.body;
+            const { productId, quantity, size, color } = req.body;
             const userId = req.user.userId; // Extract userId from the decoded token
 
         
@@ -14,7 +14,7 @@ function cartController()
             // console.log('userId:', userId, 'productId:', productId, 'quantity:', quantity); // This line should work without issues
         
             // Validate inputs
-            if (!userId || !productId || quantity === undefined || !size || quantity <= 0) {
+            if (!userId || !productId || quantity === undefined || !size || !color  || quantity <= 0) {
                 return res.status(400).json({ error: 'All fields are required and quantity must be greater than 0' });
             }
         
@@ -41,22 +41,17 @@ function cartController()
                 }
         
                     // Check if the product with the specific size already exists in the cart
-                    const existingProductIndex = cart.products.findIndex(p => p.productId.toString() === productId && p.size === size);
+                    const existingProductIndex = cart.products.findIndex(p => p.productId.toString() === productId && p.size === size && p.color === color);
             
                     if (existingProductIndex !== -1) {
                         // If product exists, update the quantity for the specific size
                         cart.products[existingProductIndex].quantity += Number(quantity);
                     } else {
                         // If product does not exist with that size, add it to the cart
-                        cart.products.push({ productId, quantity, size });
+                        cart.products.push({ productId, quantity, size, color });
                     }
         
-                // Uncomment if you want to recalculate the total amount
-                // Assuming you have a price field in your ProductModel
-                // cart.totalAmount = cart.products.reduce((total, item) => {
-                //     const productPrice = product.price; // Adjust if needed
-                //     return total + productPrice * item.quantity;
-                // }, 0);
+             
         
                 await cart.save();
                 res.json({ message: 'Product added to cart successfully', cart });
