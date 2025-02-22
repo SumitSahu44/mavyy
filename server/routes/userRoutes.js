@@ -21,7 +21,7 @@ router.delete('/cartClear', authenticateToken, cartController().clearCart)
 router.get('/products', productController().getproducts)
 router.post('/signin', authController().postSignin);
 
-router.post('/checkout', authenticateToken, checkout().payment)
+router.post('/checkout', checkout().payment)
 
 
 
