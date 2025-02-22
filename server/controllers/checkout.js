@@ -28,7 +28,7 @@ function checkout() {
     return {
         async payment(req, res) {
             try {
-                const { userId, cartItems, totalBill } = req.body;
+                const { cartItems, totalBill } = req.body;
 
                 // Ensure cartItems array exists and has data
                 if (!cartItems || cartItems.length === 0) {
