@@ -54,12 +54,28 @@ function checkout() {
                                 },
                                 unit_amount: (["S", "M", "L"].includes(item.size) ? 24 : 34) * 100 + 99, // Set price based on size and ensure .99
                             },
+
+                            
                             quantity: item.quantity, // Use the quantity from the cart item
                         };
 
 
                     })
                 );
+
+                  // Add shipping charge as a separate line item
+                    lineItems.push({
+                        price_data: {
+                            currency: 'usd',
+                            product_data: {
+                                name: "Shipping Charge",
+                            },
+                            unit_amount: 1099, // $10.99 shipping charge
+                        },
+                        quantity: 1,
+                    });
+
+
                 // Create Stripe checkout session
                 const session = await stripe.checkout.sessions.create({
                     line_items:lineItems,
