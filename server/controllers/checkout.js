@@ -39,16 +39,15 @@ function checkout() {
                 const lineItems = await Promise.all(
                     cartItems.map(async (item) => {
                         const productDetails = await getProductById(item.productId);
-
+                        
+                        var completeProductDetail = `${productDetails.name} - ${item.size} - ${item.color}`  ;
+                        
                         return {
                             price_data: {
                                 currency: 'usd',
                                 product_data: {
-                                    name: productDetails.name,
-                                    metadata: {
-                                        size: item.size,
-                                        color: item.color,
-                                    }
+                                    name: completeProductDetail,
+                                   
                                 },
                                 unit_amount: (["S", "M", "L"].includes(item.size) ? 24 : 34) * 100 + 99,
                             },
