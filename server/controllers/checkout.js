@@ -32,7 +32,7 @@ function checkout() {
         
         async payment(req, res) {
             try {
-                const { cartItems, totalBill } = req.body;
+                const { cartItems, totalBill, email } = req.body;
 
                 // Ensure cartItems exist
                 if (!cartItems || cartItems.length === 0) {
@@ -77,12 +77,13 @@ function checkout() {
                 const session = await stripe.checkout.sessions.create({
                     line_items: lineItems,
                     mode: 'payment',
+                    customer_email: email, // ✅ Pre-fill the email
                     shipping_address_collection: {
                         allowed_countries: ['US', 'CA', 'IN'],
                     },
                     phone_number_collection: { enabled: true }, // ✅ Enable phone number collection
                     success_url: `${process.env.FRONTEND_BASE_URL}/success?session_id=${randNum}`, // Temporary placeholder
-                    cancel_url: `${process.env.FRONTEND_BASE_URL}/cart`,
+                    cancel_url: `${process.env.FRONTEND_BASE_URL}/failed?session_id=${randNum}`,
                 });
                 
                 res.json({ url: session.url });
