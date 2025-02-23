@@ -23,6 +23,8 @@ router.post('/signin', authController().postSignin);
 
 router.post('/checkout', checkout().payment)
 
+router.get('/checkout', checkout().getSessionDetails)
+
 
 
 

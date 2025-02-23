@@ -25,7 +25,11 @@ async function getProductById(productId) {
 
 
 function checkout() {
+        const randNum = Math.random();
+     
     return {
+
+        
         async payment(req, res) {
             try {
                 const { cartItems, totalBill } = req.body;
@@ -67,7 +71,8 @@ function checkout() {
                     },
                     quantity: 1,
                 });
-
+                       
+              
                 // Create Stripe checkout session with phone number collection
                 const session = await stripe.checkout.sessions.create({
                     line_items: lineItems,
@@ -76,10 +81,10 @@ function checkout() {
                         allowed_countries: ['US', 'CA', 'IN'],
                     },
                     phone_number_collection: { enabled: true }, // ✅ Enable phone number collection
-                    success_url: `${process.env.FRONTEND_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+                    success_url: `${process.env.FRONTEND_BASE_URL}/success?session_id=${randNum}`, // Temporary placeholder
                     cancel_url: `${process.env.FRONTEND_BASE_URL}/cart`,
                 });
-
+                
                 res.json({ url: session.url });
             } catch (error) {
                 console.error("Error during Stripe checkout:", error);
@@ -96,13 +101,19 @@ function checkout() {
                 }
 
                 // Retrieve session details from Stripe
-                const session = await stripe.checkout.sessions.retrieve(session_id);
+                 if(session_id === randNum)
+                {
+                    res.json({
+                          success: true
+                    });
+                }else{
+                    res.json({
+                        success: false
+                    });
+                }
 
-                res.json({
-                    customer_email: session.customer_details.email,
-                    phone_number: session.customer_details.phone, // ✅ Retrieve phone number
-                    shipping_address: session.shipping_details.address,
-                });
+                
+              
             } catch (error) {
                 console.error("Error retrieving session details:", error);
                 res.status(500).json({ message: "Failed to retrieve session details" });
