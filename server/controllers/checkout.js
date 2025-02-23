@@ -30,55 +30,55 @@ function checkout() {
             try {
                 const { cartItems, totalBill } = req.body;
 
-                // Ensure cartItems array exists and has data
+                // Ensure cartItems exist
                 if (!cartItems || cartItems.length === 0) {
                     return res.status(400).json({ error: "Cart is empty" });
                 }
 
-                // Convert cartItems to Stripe-compatible line_items format
+                // Convert cartItems to Stripe-compatible format
                 const lineItems = await Promise.all(
                     cartItems.map(async (item) => {
-                        // Fetch product details from the database
                         const productDetails = await getProductById(item.productId);
 
                         return {
                             price_data: {
                                 currency: 'usd',
                                 product_data: {
-                                    name: productDetails.name, // Use product name from DB
+                                    name: productDetails.name,
                                     metadata: {
-                                        size: item.size,   // Passing size
-                                        color: item.color, // Passing color
+                                        size: item.size,
+                                        color: item.color,
                                     }
                                 },
-                                unit_amount: (["S", "M", "L"].includes(item.size) ? 24 : 34) * 100 + 99, // Set price based on size and ensure .99
+                                unit_amount: (["S", "M", "L"].includes(item.size) ? 24 : 34) * 100 + 99,
                             },
-                            quantity: item.quantity, // Use the quantity from the cart item
+                            quantity: item.quantity,
                         };
                     })
                 );
 
-                // Add shipping charge as a separate line item
+                // Add shipping charge
                 lineItems.push({
                     price_data: {
                         currency: 'usd',
                         product_data: {
                             name: "Shipping Charge",
                         },
-                        unit_amount: 1099, // $10.99 shipping charge
+                        unit_amount: 1099,
                     },
                     quantity: 1,
                 });
 
-                // Create Stripe checkout session with shipping address collection enabled
+                // Create Stripe checkout session with phone number collection
                 const session = await stripe.checkout.sessions.create({
                     line_items: lineItems,
                     mode: 'payment',
                     shipping_address_collection: {
-                        allowed_countries: ['US', 'CA', 'IN'], // Add more countries if needed
+                        allowed_countries: ['US', 'CA', 'IN'],
                     },
+                    phone_number_collection: { enabled: true }, // ✅ Enable phone number collection
                     success_url: `${process.env.FRONTEND_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-                    cancel_url: `${process.env.FRONTEND_BASE_URL}/cart`
+                    cancel_url: `${process.env.FRONTEND_BASE_URL}/cart`,
                 });
 
                 res.json({ url: session.url });
@@ -96,11 +96,13 @@ function checkout() {
                     return res.status(400).json({ error: "Session ID is required" });
                 }
 
+                // Retrieve session details from Stripe
                 const session = await stripe.checkout.sessions.retrieve(session_id);
 
                 res.json({
                     customer_email: session.customer_details.email,
-                    shipping_address: session.shipping_details.address
+                    phone_number: session.customer_details.phone, // ✅ Retrieve phone number
+                    shipping_address: session.shipping_details.address,
                 });
             } catch (error) {
                 console.error("Error retrieving session details:", error);
@@ -109,6 +111,7 @@ function checkout() {
         }
     };
 }
+
 
 
 module.exports = checkout;
