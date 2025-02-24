@@ -25,7 +25,7 @@ router.post('/signin', authController().postSignin);
 router.post('/checkout', checkout().payment)
 
 router.get('/checkout', checkout().getSessionDetails)
-router.post('/sendMail', sendMailController())
+router.post('/sendMail', sendMailController().sendMail)
 
 
 
