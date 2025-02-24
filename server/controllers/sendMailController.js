@@ -1,5 +1,6 @@
 
 const nodemailer = require("nodemailer");
+// send mail rote
 function sendMailController()
 {
     return {
