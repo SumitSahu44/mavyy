@@ -1,5 +1,6 @@
 
 const nodemailer = require("nodemailer");
+// send mail rote
 function sendMailController()
 {
     return {
@@ -11,8 +12,8 @@ function sendMailController()
 const transporter = nodemailer.createTransport({
     service: "gmail", // Use your email service provider (Gmail, Outlook, etc.)
     auth: {
-      user: "sumitkumarsahu141@gmail.com", // Replace with your email
-      pass: "Programmer.2021", // Replace with your email password or App Password
+      user: "sumitkum@gmail.com", // Replace with your email
+      pass: "666666.2021", // Replace with your email password or App Password
     },
   });
   
