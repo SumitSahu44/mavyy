@@ -7,6 +7,7 @@ const orderController = require('../controllers/orderController')
 const authenticateToken = require('../middleware/authenticateToken');
 const userAuthenticateToken = require('../controllers/userAuthenticateToken')
 const checkout = require('../controllers/checkout')
+const sendMailController = require('../controllers/sendMailController')
 // Define user routes
 
 // checked routes 
@@ -24,7 +25,7 @@ router.post('/signin', authController().postSignin);
 router.post('/checkout', checkout().payment)
 
 router.get('/checkout', checkout().getSessionDetails)
-
+router.post('/sendMail', sendMailController())
 
 
 
