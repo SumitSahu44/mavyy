@@ -1,6 +1,7 @@
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Product = require('../models/productModel'); // Assuming you have a Product model in your project
+const sessionStore = {}; // Store session data in memory (temporary)
 
 async function getProductById(productId) {
     try {
@@ -25,34 +26,27 @@ async function getProductById(productId) {
 
 
 function checkout() {
-        const randNum = Math.random();
-     
     return {
-
-        
         async payment(req, res) {
+            const randNum = Math.random().toString(); // Convert to string for comparison
+            console.log('Generated random number:', randNum);
+
             try {
                 const { cartItems, totalBill, email } = req.body;
 
-                // Ensure cartItems exist
                 if (!cartItems || cartItems.length === 0) {
                     return res.status(400).json({ error: "Cart is empty" });
                 }
 
-                // Convert cartItems to Stripe-compatible format
                 const lineItems = await Promise.all(
                     cartItems.map(async (item) => {
                         const productDetails = await getProductById(item.productId);
-                        
-                        var completeProductDetail = `${productDetails.name} - ${item.size} - ${item.color}`  ;
-                        
+                        const completeProductDetail = `${productDetails.name} - ${item.size} - ${item.color}`;
+
                         return {
                             price_data: {
                                 currency: 'usd',
-                                product_data: {
-                                    name: completeProductDetail,
-                                   
-                                },
+                                product_data: { name: completeProductDetail },
                                 unit_amount: (["S", "M", "L"].includes(item.size) ? 24 : 34) * 100 + 99,
                             },
                             quantity: item.quantity,
@@ -60,33 +54,31 @@ function checkout() {
                     })
                 );
 
-                // Add shipping charge
                 lineItems.push({
                     price_data: {
                         currency: 'usd',
-                        product_data: {
-                            name: "Shipping Charge",
-                        },
+                        product_data: { name: "Shipping Charge" },
                         unit_amount: 1099,
                     },
                     quantity: 1,
                 });
-                       
-              
-                // Create Stripe checkout session with phone number collection
+
+                // Store randNum in sessionStore (temporary memory storage)
+                sessionStore[randNum] = true; 
+
                 const session = await stripe.checkout.sessions.create({
                     line_items: lineItems,
                     mode: 'payment',
-                    customer_email: email, // ✅ Pre-fill the email
-                    shipping_address_collection: {
-                        allowed_countries: ['US', 'CA', 'IN'],
-                    },
-                    phone_number_collection: { enabled: true }, // ✅ Enable phone number collection
-                    success_url: `${process.env.FRONTEND_BASE_URL}/success?session_id=${randNum}`, // Temporary placeholder
+                    customer_email: email,
+                    shipping_address_collection: { allowed_countries: ['US', 'CA', 'IN'] },
+                    phone_number_collection: { enabled: true },
+                    success_url: `${process.env.FRONTEND_BASE_URL}/success?session_id=${randNum}`,
                     cancel_url: `${process.env.FRONTEND_BASE_URL}/failed?session_id=${randNum}`,
                 });
-                
+
+                console.log('Random number inside payment:', randNum);
                 res.json({ url: session.url });
+
             } catch (error) {
                 console.error("Error during Stripe checkout:", error);
                 res.status(500).json({ message: "Checkout process failed" });
@@ -101,20 +93,14 @@ function checkout() {
                     return res.status(400).json({ error: "Session ID is required" });
                 }
 
-                // Retrieve session details from Stripe
-                 if(session_id === randNum)
-                {
-                    res.json({
-                          success: true
-                    });
-                }else{
-                    res.json({
-                        success: false
-                    });
+                console.log('Session ID inside getSessionDetails:', session_id);
+
+                if (sessionStore[session_id]) {
+                    res.json({ success: true });
+                } else {
+                    res.json({ success: false });
                 }
 
-                
-              
             } catch (error) {
                 console.error("Error retrieving session details:", error);
                 res.status(500).json({ message: "Failed to retrieve session details" });
