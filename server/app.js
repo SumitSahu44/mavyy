@@ -24,14 +24,6 @@ mongoose.connect(process.env.MONGODB_URL)
 
 
 
-  // const corsOptions = {
-  //   origin: 'http://localhost:5173/',  // Specify your frontend's URL
-  //   methods: ['GET', 'POST', 'DELETE'],          // Allow specific methods
-  //   credentials: true                  // Allow credentials (cookies, tokens, etc.)
-  // };
-  
-  // app.use(cors(corsOptions));
-
 const allowedOrigins = ['https://techiweb.in', 'http://localhost:5173', 'https://mavyscrubs.com']; // Add all allowed origins here
 
 const corsOptions = {
