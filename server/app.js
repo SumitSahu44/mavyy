@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const session = require("express-session");
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -11,6 +12,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
 // Middleware to parse JSON data
 app.use(express.json());
+
+
+// Configure express-session
+app.use(
+  session({
+    secret: "your-secret-key", // Change this to a strong secret key
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, httpOnly: false }, // secure: true for HTTPS
+  })
+);
+
+
 
 // Middleware to parse x-www-form-urlencoded data
 app.use(express.urlencoded({ extended: true }));
