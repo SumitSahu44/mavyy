@@ -24,9 +24,7 @@ router.post('/signin', authController().postSignin);
 
 router.post('/checkout', checkout().payment)
 router.get('/checkout', checkout().getSessionDetails)
-
-
-
+router.get('/get-product-session',checkout().getProductSession)
 // send mail rote 
 router.post('/sendMail', sendMailController().sendMail)
 

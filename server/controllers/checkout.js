@@ -34,6 +34,8 @@ function checkout() {
             try {
                 const { cartItems, totalBill, email } = req.body;
 
+
+               
                 if (!cartItems || cartItems.length === 0) {
                     return res.status(400).json({ error: "Cart is empty" });
                 }
@@ -62,6 +64,23 @@ function checkout() {
                     },
                     quantity: 1,
                 });
+
+
+//    code for pass data to mail api 
+
+req.session.userEmail = { email: email }; // Set session data
+
+req.session.productData = { productData: lineItems }; // Set session data
+console.log("session set")
+
+
+
+
+
+
+
+
+
 
                 // Store randNum in sessionStore (temporary memory storage)
                 sessionStore[randNum] = true; 
@@ -105,7 +124,23 @@ function checkout() {
                 console.error("Error retrieving session details:", error);
                 res.status(500).json({ message: "Failed to retrieve session details" });
             }
+        },
+
+        async getProductSession(req,res)
+        {
+            if (req.session.userEmail && req.session.productData) {
+                res.json({
+                    userEmail: req.session.userEmail.email,
+                    productData: req.session.productData.productData,
+                });
+            } else {
+                res.status(404).json({ message: "No session data found" });
+            }
         }
+
+
+
+
     };
 }
 
