@@ -29,7 +29,7 @@ function checkout() {
     return {
         async payment(req, res) {
             const randNum = Math.random().toString(); // Convert to string for comparison
-            console.log('Generated random number:', randNum);
+            // console.log('Generated random number:', randNum);
 
             try {
                 const { cartItems, totalBill, email } = req.body;
@@ -71,7 +71,7 @@ function checkout() {
 req.session.userEmail = { email: email }; // Set session data
 
 req.session.productData = { productData: lineItems }; // Set session data
-console.log("session set")
+// console.log("session set")
 
 
 
@@ -95,7 +95,7 @@ console.log("session set")
                     cancel_url: `${process.env.FRONTEND_BASE_URL}/failed?session_id=${randNum}`,
                 });
 
-                console.log('Random number inside payment:', randNum);
+                // console.log('Random number inside payment:', randNum);
                 res.json({ url: session.url });
 
             } catch (error) {
@@ -112,7 +112,7 @@ console.log("session set")
                     return res.status(400).json({ error: "Session ID is required" });
                 }
 
-                console.log('Session ID inside getSessionDetails:', session_id);
+                // console.log('Session ID inside getSessionDetails:', session_id);
 
                 if (sessionStore[session_id]) {
                     res.json({ success: true });
