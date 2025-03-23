@@ -20,7 +20,7 @@ app.use(
     secret: "your-secret-key", // Change this to a strong secret key
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, httpOnly: false }, // secure: true for HTTPS
+    cookie: { secure: true, httpOnly: false }, // secure: true for HTTPS
   })
 );
 
