@@ -13,6 +13,7 @@ app.use(cookieParser())
 // Middleware to parse JSON data
 app.use(express.json());
 
+app.set("trust proxy", 1); // Trust first proxy
 
 // Configure express-session
 app.use(
