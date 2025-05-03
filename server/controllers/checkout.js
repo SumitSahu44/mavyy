@@ -25,66 +25,64 @@ async function getProductById(productId) {
 }
 
 
+
 function checkout() {
     return {
         async payment(req, res) {
-            const randNum = Math.random().toString(); // Convert to string for comparison
-            // console.log('Generated random number:', randNum);
-
+            const randNum = Math.random().toString();
             try {
-                const { cartItems, totalBill, email } = req.body;
-
-
-               
+                const { cartItems, totalBill, email, couponCodePass } = req.body;
+        
                 if (!cartItems || cartItems.length === 0) {
                     return res.status(400).json({ error: "Cart is empty" });
                 }
-
+        
+                // Step 1: Check discount coupon
+                let discountPercent = 0;
+                if (couponCodePass && couponCodePass.toUpperCase() === "MAVY20") {
+                    discountPercent = 20;
+                }
+        
+                // Step 2: Calculate line items with conditional discount
                 const lineItems = await Promise.all(
                     cartItems.map(async (item) => {
                         const productDetails = await getProductById(item.productId);
                         const completeProductDetail = `${productDetails.name} - ${item.size} - ${item.color}`;
-
+        
+                        let basePrice = (["S", "M", "L"].includes(item.size) ? 24 : 34) * 100 + 99;
+        
+                        const finalPrice = discountPercent > 0
+                            ? Math.round(basePrice - (basePrice * discountPercent) / 100)
+                            : basePrice;
+        
                         return {
                             price_data: {
                                 currency: 'usd',
                                 product_data: { name: completeProductDetail },
-                                unit_amount: (["S", "M", "L"].includes(item.size) ? 24 : 34) * 100 + 99,
+                                unit_amount: finalPrice,
                             },
                             quantity: item.quantity,
                         };
                     })
                 );
-
-                lineItems.push({
+        
+                // Step 3: Add shipping cost
+                const shippingItem = {
                     price_data: {
                         currency: 'usd',
                         product_data: { name: "Shipping Charge" },
                         unit_amount: 1099,
                     },
                     quantity: 1,
-                });
-
-
-//    code for pass data to mail api 
-
-req.session.userEmail = { email: email }; // Set session data
-
-req.session.productData = { productData: lineItems }; // Set session data
-// console.log("session set")
-
-
-
-
-
-
-
-
-
-
-                // Store randNum in sessionStore (temporary memory storage)
-                sessionStore[randNum] = true; 
-
+                };
+                lineItems.push(shippingItem);
+        
+                // Save data to session
+                req.session.userEmail = { email: email };
+                req.session.productData = { productData: lineItems };
+                sessionStore[randNum] = true;
+        
+                // Step 4: Create Stripe checkout session
                 const session = await stripe.checkout.sessions.create({
                     line_items: lineItems,
                     mode: 'payment',
@@ -94,40 +92,31 @@ req.session.productData = { productData: lineItems }; // Set session data
                     success_url: `${process.env.FRONTEND_BASE_URL}/success?session_id=${randNum}`,
                     cancel_url: `${process.env.FRONTEND_BASE_URL}/failed?session_id=${randNum}`,
                 });
-
-                // console.log('Random number inside payment:', randNum);
+        
                 res.json({ url: session.url });
-
+        
             } catch (error) {
                 console.error("Error during Stripe checkout:", error);
                 res.status(500).json({ message: "Checkout process failed" });
             }
         },
-
+        
         async getSessionDetails(req, res) {
             try {
                 const { session_id } = req.query;
-
-                if (!session_id) {
-                    return res.status(400).json({ error: "Session ID is required" });
-                }
-
-                // console.log('Session ID inside getSessionDetails:', session_id);
-
+                if (!session_id) return res.status(400).json({ error: "Session ID is required" });
                 if (sessionStore[session_id]) {
                     res.json({ success: true });
                 } else {
                     res.json({ success: false });
                 }
-
             } catch (error) {
                 console.error("Error retrieving session details:", error);
                 res.status(500).json({ message: "Failed to retrieve session details" });
             }
         },
 
-        async getProductSession(req,res)
-        {
+        async getProductSession(req, res) {
             if (req.session.userEmail && req.session.productData) {
                 res.json({
                     userEmail: req.session.userEmail.email,
@@ -137,10 +126,6 @@ req.session.productData = { productData: lineItems }; // Set session data
                 res.status(404).json({ message: "No session data found" });
             }
         }
-
-
-
-
     };
 }
 
