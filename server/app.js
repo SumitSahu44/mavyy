@@ -39,7 +39,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
 
 
-const allowedOrigins = ['https://techiweb.in', 'http://localhost:5173', 'https://mavyscrubs.com', 'www.mavyscrubs.com', 'https://www.mavyscrubs.com/']; // Add all allowed origins here
+const allowedOrigins = ['https://techiweb.in', 'http://localhost:5173', 'https://mavyscrubs.com', 'www.mavyscrubs.com', 'https://www.mavyscrubs.com']; // Add all allowed origins here
 
 const corsOptions = {
   origin: function (origin, callback) {
